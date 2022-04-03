@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'constants.dart';
 
+String chosen_category='Accomodation';
+
 var id;
 
 class Application extends StatefulWidget {
@@ -15,8 +17,8 @@ class Application extends StatefulWidget {
 
 class _ApplicationState extends State<Application> {
 
-  final List<String> categories=['Choose category','Accomodation','Transfer','Assistance with animals'];
 
+  final List<String> categories=['Choose category','Accomodation','Transfer','Assistance with animals'];
   String title='';
   String currentCategory='';
   String comment='';
@@ -70,7 +72,9 @@ class _ApplicationState extends State<Application> {
                   );
                 }).toList(),
                 onChanged: (val) {
-                  setState(() => currentCategory = val.toString());
+                  setState(() { currentCategory = val.toString();
+                    }
+                  );
                 },
               ),
             ),

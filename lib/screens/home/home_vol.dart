@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:wol_pro_1/shared/loading.dart';
-
+import 'package:flutter_switch/flutter_switch.dart';
 import '../../services/auth.dart';
 import '../../shared/application.dart';
 
@@ -29,8 +29,8 @@ class HomeVol extends StatelessWidget {
   CollectionReference appl = FirebaseFirestore.instance.collection('applications');
   final AuthService _auth = AuthService();
 
-  List<String> data_from_database =[];
-  String _id='';
+
+
   String val_data='';
 
   DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -62,33 +62,81 @@ class HomeVol extends StatelessWidget {
 
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('applications')
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          return ListView.builder(
-            itemCount: streamSnapshot.data?.docs.length,
-            itemBuilder: (ctx, index) =>
-
-            Column(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Row(
               children: [
-                Card(
-                  child: Column(
-                    children: [
-
-                      Text(streamSnapshot.data?.docs[index]['title']),
-                      Text(streamSnapshot.data?.docs[index]['category']),
-                      Text(streamSnapshot.data?.docs[index]['comment']),
-                    ],
-                  ),
+                RaisedButton(
+                  child: Text("Accom"),
+                  onPressed: () {
+                    chosen_category="Accomodation";
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeVol()));
+                  },
                 ),
+                RaisedButton(
+                  child: Text("Trans"),
+                  onPressed: () {
+                    chosen_category="Transfer";
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeVol()));
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Anim"),
+                  onPressed: () {
+                    chosen_category="Assistance with animals";
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeVol()));
 
+                  },
+
+                ),
               ],
-            )
+            ),
+          ),
 
-          );
-        },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('applications')
+                  .where("category", isEqualTo: chosen_category)
+                  .snapshots(),
+
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                return Container(
+                  width: 350,
+                  height: 300,
+                  child: ListView.builder(
+                    itemCount: streamSnapshot.data?.docs.length,
+                    itemBuilder: (ctx, index) =>
+
+                    Column(
+                      children: [
+                        Card(
+                          child: Column(
+                            children: [
+
+                              Text(streamSnapshot.data?.docs[index]['title']),
+                              Text(streamSnapshot.data?.docs[index]['category']),
+                              Text(streamSnapshot.data?.docs[index]['comment']),
+
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    )
+
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       )
 
       /**FutureBuilder(
