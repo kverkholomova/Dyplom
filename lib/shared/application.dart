@@ -5,8 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'constants.dart';
 
-String chosen_category='Accomodation';
-
+String chosen_category='';
+List chosen_category_list=[];
+var count=0;
 var id;
 
 class Application extends StatefulWidget {

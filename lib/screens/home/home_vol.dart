@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +8,7 @@ import 'package:wol_pro_1/shared/loading.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import '../../services/auth.dart';
 import '../../shared/application.dart';
+import '../settings/settings_vol.dart';
 
 
 void main() async {
@@ -59,6 +61,15 @@ class HomeVol extends StatelessWidget {
               await _auth.signOut();
             },
           ),
+          TextButton.icon(
+            icon: const Icon(Icons.settings,color: Colors.white,),
+            label: const Text('Settings',style: TextStyle(color: Colors.white),),
+            onPressed: () async {
+            Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SetVol()));
+            },
+
+          ),
 
         ],
       ),
@@ -66,35 +77,40 @@ class HomeVol extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
-            child: Row(
-              children: [
-                RaisedButton(
-                  child: Text("Accom"),
-                  onPressed: () {
-                    chosen_category="Accomodation";
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeVol()));
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Trans"),
-                  onPressed: () {
-                    chosen_category="Transfer";
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeVol()));
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Anim"),
-                  onPressed: () {
-                    chosen_category="Assistance with animals";
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeVol()));
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  RaisedButton(
+                    child: Text("Accomodation"),
+                    onPressed: () {
 
-                  },
+                      chosen_category="Accomodation";
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomeVol()));
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("Transfer"),
+                    onPressed: () {
 
-                ),
-              ],
+                      chosen_category="Transfer";
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeVol()));
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("Animal"),
+                    onPressed: () {
+
+                      chosen_category="Assistance with animals";
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomeVol()));
+
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -117,14 +133,19 @@ class HomeVol extends StatelessWidget {
                     Column(
                       children: [
                         Card(
-                          child: Column(
-                            children: [
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
 
-                              Text(streamSnapshot.data?.docs[index]['title']),
-                              Text(streamSnapshot.data?.docs[index]['category']),
-                              Text(streamSnapshot.data?.docs[index]['comment']),
+                                  Text(streamSnapshot.data?.docs[index]['title'],style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(streamSnapshot.data?.docs[index]['category'], style: TextStyle(color: Colors.grey)),
+                                  Text(streamSnapshot.data?.docs[index]['comment']),
 
-                            ],
+                                ],
+                              ),
+                            ),
                           ),
                         ),
 
