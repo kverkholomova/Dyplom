@@ -31,7 +31,7 @@ class _OptionChooseState extends State<OptionChoose> {
               child: Text('Volunteer'),
               onPressed: () {
                 option_refugee=false;
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Wrapper()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Wrapper()));
               },
               ),
             ),
@@ -43,8 +43,8 @@ class _OptionChooseState extends State<OptionChoose> {
                 color: Colors.blue,
                 child: Text('Refugee'),
                 onPressed: () {
-
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Wrapper()));
+                  option_refugee=true;
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Wrapper()));
                 },
               ),
             ),
