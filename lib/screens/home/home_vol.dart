@@ -42,12 +42,16 @@ class HomeVolState extends State<HomeVol> {
 
 
   Padding applications() {
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('applications')
             .where("category", isEqualTo: chosen_category)
+
+        //.where("volunteer_pref", arrayContainsAny: volunteer_preferencies)
+        //.where("category", arrayContainsAny: ['Accomodation', 'Transfer', 'Assistance with animals'])
             .where("status", isEqualTo: 'Sent to volunteer')
 
             //.where("category", whereIn: ['Accomodation','Transfer','Assistance with animals'])

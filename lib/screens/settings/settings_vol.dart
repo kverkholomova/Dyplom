@@ -42,6 +42,7 @@ class _SetVolState extends State<SetVol> {
             borderRadius: 50,
             borderWidth: 2, onPress: () {
               chosen_category='Transfer';
+              //volunteer_preferencies.add('Transfer');
           },
           ),
           AnimatedButton(
@@ -56,6 +57,7 @@ class _SetVolState extends State<SetVol> {
             borderRadius: 50,
             borderWidth: 2, onPress: () {
             chosen_category='Accomodation';
+            //volunteer_preferencies.add('Accomodation');
           },
           ),
           AnimatedButton(
@@ -70,6 +72,7 @@ class _SetVolState extends State<SetVol> {
             borderRadius: 50,
             borderWidth: 2, onPress: () {
             chosen_category='Assistance with animals';
+            //volunteer_preferencies.add('Assistance with animals');
           },
           ),
         ],

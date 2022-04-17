@@ -8,7 +8,7 @@ import 'package:wol_pro_1/services/auth.dart';
 import 'constants.dart';
 
 String chosen_category = '';
-List chosen_category_list = [];
+List<String> volunteer_preferencies=["All of applications"];
 var count = 0;
 
 String status = "Sent to volunteer";
@@ -114,14 +114,16 @@ class _ApplicationState extends State<Application> {
                     await FirebaseFirestore.instance
                         .collection('applications')
                         .add({
-                      'title': title,
-                      'category': currentCategory,
-                      'comment': comment,
+                      'title': (title==Null)?("Title"):(title),
+                      'category': (currentCategory==Null)?("Category"):(currentCategory),
+                      'comment': (comment==Null)?("Comment"):(comment),
                       'status': status,
+                      //'volunteer_pref': currentCategory,
+
                      // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,
                     });
 
-                    //ID = FirebaseFirestore.instance.collection('applications').doc().id;//FirebaseAuth.instance.currentUser?.uid;
+                    ID = FirebaseFirestore.instance.collection('applications').doc().id;//FirebaseAuth.instance.currentUser?.uid;
                     // id = ;
                   }),
             ],

@@ -28,63 +28,86 @@ class _RegisterVolState extends State<RegisterVol> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
-        backgroundColor: Colors.brown[400],
+        backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
         elevation: 0.0,
-        title: Text('Sign up'),
+        title: Text('Sign up',style: TextStyle(fontSize: 16),),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sign In'),
+            icon: Icon(Icons.person,color: Colors.white,),
+            label: Text('Sign In',style: TextStyle(color: Colors.white),),
             onPressed: () => widget.toggleView(),
           ),
         ],
       ),
       body: Container(
-        color: Colors.blue[100],
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        color: Color.fromRGBO(234, 191, 213, 0.8),
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                onChanged: (val) {
-                  setState(() => email = val);
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Password'),
-                obscureText: true,
-                validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
-                onChanged: (val) {
-                  setState(() => password = val);
-                },
-              ),
-              SizedBox(height: 20.0),
 
-              RaisedButton(
-                  color: Colors.pink[400],
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.only(top: 75),
+                child: SizedBox(
+                  height: 55,
+                  child: TextFormField(
+                    decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                    onChanged: (val) {
+                      setState(() => email = val);
+                    },
                   ),
-                  onPressed: () async {
-                    if(_formKey.currentState!.validate()){
-                      setState(() => loading = true);
-                      dynamic result = await _auth.registerWithEmailAndPasswordVol(email, password);
-                      if(result == null) {
-                        setState(() {
-                          loading = false;
-                          error = 'Please supply a valid email';
-                        });
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 55,
+                  child: TextFormField(
+                    decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                    obscureText: true,
+                    validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
+                    onChanged: (val) {
+                      setState(() => password = val);
+                    },
+                  ),
+                ),
+              ),
+
+
+              Padding(
+                padding: const EdgeInsets.only(top: 240),
+                child: Container(
+                  height: 55,
+                  width: 275,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: MaterialButton(
+                      color: Color.fromRGBO(94, 167, 187, 0.8),
+                      child: Text(
+                        'Register',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        if(_formKey.currentState!.validate()){
+                          setState(() => loading = true);
+                          dynamic result = await _auth.registerWithEmailAndPasswordVol(email, password);
+                          if(result == null) {
+                            setState(() {
+                              loading = false;
+                              error = 'Please supply a valid email';
+                            });
+                          }
+                        }
                       }
-                    }
-                  }
+                  ),
+                ),
               ),
               SizedBox(height: 12.0),
               Text(
