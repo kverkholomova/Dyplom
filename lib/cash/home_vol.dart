@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+/**import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }**/
-String card_title='';
-String card_category='';
-String card_comment='';
+//String card_title='';
+//String card_category='';
+//String card_comment='';
 
 class HomeVol extends StatefulWidget {
   @override
@@ -40,9 +40,9 @@ class HomeVolState extends State<HomeVol> {
       FirebaseFirestore.instance.collection('applications');
   final AuthService _auth = AuthService();
 
+  List<String> categories = ["Accomodation", "Transfer", "Assistance with animals"];
 
   Padding applications() {
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: StreamBuilder(
@@ -62,14 +62,15 @@ class HomeVolState extends State<HomeVol> {
             width: 350,
             height: 300,
             child: ListView.builder(
+                scrollDirection: Axis.horizontal,
                 itemCount: streamSnapshot.data?.docs.length,
                 itemBuilder: (ctx, index) => Column(
                       children: [
                         MaterialButton(
                           onPressed: () {
-                            card_title=streamSnapshot.data?.docs[index]['title'] as String;
-                            card_category=streamSnapshot.data?.docs[index]['category'] as String;
-                            card_comment=streamSnapshot.data?.docs[index]['comment'] as String;
+                            //card_title=streamSnapshot.data?.docs[index]['title'] as String;
+                            //card_category=streamSnapshot.data?.docs[index]['category'] as String;
+                            //card_comment=streamSnapshot.data?.docs[index]['comment'] as String;
                             setState(() {
                               Navigator.push(
                                 context,
@@ -122,8 +123,19 @@ class HomeVolState extends State<HomeVol> {
         return true;
       },
       child: Scaffold(
-          body: Column(
+          body:
+
+
+          Column(
         children: [
+          SizedBox(
+            height: 25,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) => applications(),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Padding(
@@ -135,7 +147,7 @@ class HomeVolState extends State<HomeVol> {
                       child: Text("Accomodation"),
                       onPressed: () {
                         setState(() {
-                          chosen_category = "Accomodation";
+                         // chosen_category = "Accomodation";
 
                           Navigator.push(
                               context,
@@ -147,7 +159,7 @@ class HomeVolState extends State<HomeVol> {
                     child: Text("Transfer"),
                     onPressed: () {
                       setState(() {
-                        chosen_category = "Transfer";
+                       // chosen_category = "Transfer";
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => HomeVol()));
                       });
@@ -157,7 +169,7 @@ class HomeVolState extends State<HomeVol> {
                     child: Text("Animal"),
                     onPressed: () {
                       setState(() {
-                        chosen_category = "Assistance with animals";
+                       // chosen_category = "Assistance with animals";
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => HomeVol()));
                       });
@@ -395,3 +407,4 @@ class HomeVolState extends State<HomeVol> {
             return Loading();
           },
         ),**/
+**/

@@ -7,8 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'constants.dart';
 
-String chosen_category = '';
-List<String> volunteer_preferencies=["All of applications"];
+List<String> chosen_category = [];
+
 var count = 0;
 
 String status = "Sent to volunteer";
