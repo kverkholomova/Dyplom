@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/settings_of_application.dart';
 
-import '../../page_of_application_vol.dart';
-import '../../screen_with_applications.dart';
 import '../option.dart';
 
 String card_title_accepted='';
