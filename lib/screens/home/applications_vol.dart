@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/screen_with_applications.dart';
 import 'package:wol_pro_1/settings_of_application.dart';
 
 import '../option.dart';
@@ -22,7 +23,7 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => OptionChoose()),
+          MaterialPageRoute(builder: (context) => Categories()),
         );
         return true;
       },
@@ -30,6 +31,14 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
           elevation: 0.0,
+          leading: IconButton(onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Categories()),
+            );
+          }, icon: Icon(Icons.arrow_back),
+
+          ),
           title: Text('Your applications',style: TextStyle(fontSize: 16),),
 
         ),

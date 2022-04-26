@@ -48,9 +48,9 @@ class _VolunteerRegisterFormState extends State<VolunteerRegisterForm> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back,color: Colors.white,),
-
             onPressed: () async {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => OptionChoose()));
@@ -65,6 +65,10 @@ class _VolunteerRegisterFormState extends State<VolunteerRegisterForm> {
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text("Choose categories which are the best suitable for you", style: TextStyle(fontSize: 16),textAlign: TextAlign.center,),
+              ),
               Row(
                 children: [
                   Padding(
@@ -159,7 +163,7 @@ class _VolunteerRegisterFormState extends State<VolunteerRegisterForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 350),
+                padding: const EdgeInsets.only(top: 300),
                 child: Container(
                   height: 55,
                   width: 275,

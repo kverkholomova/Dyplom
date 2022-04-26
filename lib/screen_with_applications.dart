@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/page_of_application_vol.dart';
+import 'package:wol_pro_1/screens/home/applications_vol.dart';
 import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/shared/application.dart';
@@ -38,21 +39,29 @@ class CategoriesState extends State<Categories> {
             backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
             elevation: 0.0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back,color: Colors.white,),
-
+              icon: const Icon(Icons.exit_to_app,color: Colors.white,),
               onPressed: () async {
                 await _auth.signOut();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OptionChoose()),
+                );
               },
             ),
             actions: <Widget>[
 
-              TextButton.icon(
+              IconButton(
                 icon: const Icon(Icons.person,color: Colors.white,),
-                label: const Text('logout',style: TextStyle(color: Colors.white),),
+                //label: const Text('logout',style: TextStyle(color: Colors.white),),
                 onPressed: () async {
-                  await _auth.signOut();
+                  //await _auth.signOut();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ApplicationsOfVolunteer()),
+                  );
                 },
               ),
+
             ],
             bottom: TabBar(
               indicatorColor: Color.fromRGBO(85, 146, 169, 0.8),
