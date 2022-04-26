@@ -36,9 +36,9 @@ class _RegisterVolState extends State<RegisterVol> {
         );
         return true;
       },
-      child: Scaffold(
+      child: loading ? Loading() :Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.brown[100],
+
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
           elevation: 0.0,

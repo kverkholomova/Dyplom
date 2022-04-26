@@ -29,15 +29,23 @@ class _RegisterRefState extends State<RegisterRef> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.brown[100],
+      resizeToAvoidBottomInset: false,
+
       appBar: AppBar(
-        backgroundColor: Colors.brown[400],
+        backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
         elevation: 0.0,
-        title: Text('Sign up'),
+        title: Text('Sign up',style: TextStyle(fontSize: 16),),
+        leading: IconButton(icon: const Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OptionChoose()),
+            );
+          },),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sign In'),
+            icon: Icon(Icons.person,color: Colors.white,),
+            label: Text('Sign In',style: TextStyle(color: Colors.white),),
             onPressed: () => widget.toggleView(),
           ),
         ],
