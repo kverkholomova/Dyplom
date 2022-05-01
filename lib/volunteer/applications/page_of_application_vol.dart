@@ -1,11 +1,12 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/screen_with_applications.dart';
-import 'package:wol_pro_1/screens/home/applications_vol.dart';
+import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 
 class PageOfApplication extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PageOfApplicationState extends State<PageOfApplication> {
   //var id = "";
 
   String status_updated='Application is accepted';
+  String volID = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +76,9 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                     FirebaseFirestore.instance
                                         .collection('applications')
                                         .doc(streamSnapshot.data?.docs[index].id).update({"status": status_updated});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"volunteerID": volID});
 
                                     print(streamSnapshot.data?.docs[index].id);
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance

@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
-import 'package:wol_pro_1/cash/categories.dart';
-import 'package:wol_pro_1/screens/home/applications_vol.dart';
+
 import 'package:wol_pro_1/screens/option.dart';
 
-import '../../shared/application.dart';
-import '../../screen_with_applications.dart';
-import '../../cash/home_vol.dart';
+import '../shared/application.dart';
+import '../volunteer/applications/screen_with_applications.dart';
+import '../volunteer/authenticate/register_volunteer.dart';
+import '../volunteer/authenticate/register_volunteer_1.dart';
+
+
 
 String firstCategory='';
 String secondCategory='';
@@ -21,6 +25,7 @@ class VolunteerRegisterForm extends StatefulWidget {
 
 class _VolunteerRegisterFormState extends State<VolunteerRegisterForm> {
 
+  var ID;
   void arguments(){
     if(chosen_category.length==1) {
       firstCategory = chosen_category[0];
@@ -176,10 +181,16 @@ class _VolunteerRegisterFormState extends State<VolunteerRegisterForm> {
                         'Finish',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
+                      onPressed: (){
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Categories()));
-                      }
+                                  MaterialPageRoute(builder: (context) => Categories()));
+
+
+                      },
+                      // onPressed: () {
+                      //   Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) => Categories()));
+                      // }
                   ),
                 ),
               ),

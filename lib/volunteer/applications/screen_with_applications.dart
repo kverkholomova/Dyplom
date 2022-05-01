@@ -1,22 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/page_of_application_vol.dart';
-import 'package:wol_pro_1/screens/home/applications_vol.dart';
+import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
+import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:wol_pro_1/screens/option.dart';
+import 'package:wol_pro_1/cash/register_form.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/shared/application.dart';
+import 'package:wol_pro_1/shared/loading.dart';
+import 'dart:async';
 
 String card_title='';
 String card_category='';
 String card_comment='';
 
 class Categories extends StatefulWidget {
+  const Categories({Key? key}) : super(key: key);
   @override
   State createState() => new CategoriesState();
 }
 
 class CategoriesState extends State<Categories> {
 
+  bool loading = false;
   final AuthService _auth = AuthService();
   List<String> categories = ["Your categories", "Accomodation", "Transfer", "Assistance with animals"];
 
@@ -77,6 +84,7 @@ class CategoriesState extends State<Categories> {
           ),
         body: TabBarView(
           children: [
+
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('applications')
@@ -125,11 +133,13 @@ class CategoriesState extends State<Categories> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     children: [
+                                      //streamSnapshot.data?.docs[index]['title']==null ?
+
                                       Text(
-                                        streamSnapshot.data?.docs[index]['title'] as String,
+                                        streamSnapshot.data?.docs[index]['title'],
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
-                                      ),
+                                      ),//: Text('nic'),
                                       Text(
                                           streamSnapshot.data?.docs[index]
                                           ['category'] as String,
@@ -148,7 +158,7 @@ class CategoriesState extends State<Categories> {
               },
             ),
             StreamBuilder(
-                  stream: FirebaseFirestore.instance
+                  stream:   FirebaseFirestore.instance
                       .collection('applications')
                       .where("category", isEqualTo: "Accomodation")
 

@@ -1,6 +1,8 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/models/users_all.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/services/database.dart';
@@ -11,11 +13,13 @@ import 'package:wol_pro_1/shared/application.dart';
 
 class HomeRef extends StatelessWidget {
 
+
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
 
+    userID_ref = FirebaseAuth.instance.currentUser!.uid;
   /**  void showSettingsPanel(){
       showModalBottomSheet(
           context: context,
@@ -77,6 +81,23 @@ class HomeRef extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Application()));
+                    }
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton.icon(
+                    icon: Icon(Icons.note),
+                    color: Colors.pink[400],
+                    label: Text(
+                      'My applications',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                      print(userID_ref);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesRef()));
                     }
                 ),
               ),

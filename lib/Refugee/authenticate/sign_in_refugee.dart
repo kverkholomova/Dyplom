@@ -3,7 +3,7 @@ import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/shared/loading.dart';
 
-import '../../shared/constants.dart';
+import '../../../shared/constants.dart';
 
 class SignInRef extends StatefulWidget {
 
@@ -74,6 +74,7 @@ class _SignInRefState extends State<SignInRef> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
+
                     option_refugee=true;
                     if(_formKey.currentState!.validate()){
                       setState(() => loading = true);

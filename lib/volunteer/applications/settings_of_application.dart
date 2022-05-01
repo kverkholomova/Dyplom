@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/screen_with_applications.dart';
-import 'package:wol_pro_1/screens/home/applications_vol.dart';
+import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 
 class SettingsOfApplication extends StatefulWidget {

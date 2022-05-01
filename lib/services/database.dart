@@ -9,10 +9,21 @@ class DatabaseService{
     //collection reference
     final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
-    Future updateUserData(String name, String role) async{
+    Future updateUserData(String name, String role,String user_name, String phone, String pesel, List<String> chosen_category, id_vol) async{
       return await userCollection.doc(uid).set({
         'name': name,
         'role': role,
+        'user_name': user_name,
+        'phone_number': phone,
+        'pesel': pesel,
+        'category': chosen_category,
+        'id_vol': id_vol
+
+
+
+        // 'volunteer_name': volunteer_name,
+        // 'surname': surname,
+        // 'phone_number': phone_number,
       });
     }
 
@@ -21,7 +32,10 @@ class DatabaseService{
       return snapshot.docs.map((doc){
         return AllUsers(
             name: doc.get('name') ?? '',
-            role: doc.get('strength') ?? '0'
+            role: doc.get('strength') ?? '0',
+            // volunteer_name: doc.get('volunteer_name') ?? '',
+            // surname: doc.get('surname') ?? '',
+            // phone_number: doc.get('phone_number') ?? '',
 
         );
 
@@ -34,7 +48,12 @@ class DatabaseService{
       return UserData(
           uid: uid,
           name: snapshot.get('name'),
-          role: snapshot.get('role'));
+          role: snapshot.get('role'),
+
+          // volunteer_name: snapshot.get('volunteer_name'),
+          // volunteer_surname: snapshot.get('volunteer_surname'),
+          // phone_number: snapshot.get('phone_number'),
+      );
     }
 
     //get users stream

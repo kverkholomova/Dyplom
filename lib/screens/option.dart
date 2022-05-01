@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/screens/authenticate/authenticate.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
+
 import 'package:wol_pro_1/screens/wrapper.dart';
 import '../shared/loading.dart';
+import '../volunteer/authenticate/register_volunteer_1.dart';
 
 var option_refugee=true;
 
@@ -23,9 +24,9 @@ class _OptionChooseState extends State<OptionChoose> {
     return loading ? Loading() : Scaffold(
       
       body: Container(
-        color: Color.fromRGBO(234, 191, 213, 0.8),
+        color: const Color.fromRGBO(234, 191, 213, 0.8),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 250,horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 250,horizontal: 20),
           child: Column(
             children: [
               Center(
@@ -36,11 +37,12 @@ class _OptionChooseState extends State<OptionChoose> {
                     borderRadius: BorderRadius.circular(20)
                   ),
                   child: MaterialButton(
-                  color: Color.fromRGBO(137, 102, 120, 0.8),
-                  child: Text('Volunteer'),
+                  color: const Color.fromRGBO(137, 102, 120, 0.8),
+                  child: const Text('Volunteer'),
                   onPressed: () {
+                    chosen_category = [];
                     option_refugee=false;
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Wrapper()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Wrapper()));
                   },
                   ),
                 ),
@@ -55,11 +57,12 @@ class _OptionChooseState extends State<OptionChoose> {
                         borderRadius: BorderRadius.circular(20)
                     ),
                     child: MaterialButton(
-                      color: Color.fromRGBO(137, 102, 120, 0.8),
-                      child: Text('Refugee'),
+                      color: const Color.fromRGBO(137, 102, 120, 0.8),
+                      child: const Text('Refugee'),
                       onPressed: () {
+
                         option_refugee=true;
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Wrapper()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Wrapper()));
                       },
                     ),
                   ),

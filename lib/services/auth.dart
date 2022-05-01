@@ -1,7 +1,15 @@
 import 'package:wol_pro_1/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wol_pro_1/services/database.dart';
+import 'package:wol_pro_1/shared/application.dart';
 
+
+import '../Refugee/authenticate/register_refugee.dart';
+import '../volunteer/authenticate/register_volunteer.dart';
+import '../volunteer/authenticate/register_volunteer_1.dart';
+import '../cash/register_form.dart';
+
+// String userID = '';
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,6 +40,7 @@ class AuthService {
 
 // sign in with email and password refugee
   Future signInWithEmailAndPasswordRef(String email, String password) async {
+
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
@@ -60,7 +69,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('New refugee','2');
+      await DatabaseService(uid: user!.uid).updateUserData('New refugee','2', user_name, phone_number, passport_number,[],user!.uid);
       return _userFromCredUser(user);
     } catch (error) {
       print(error.toString());
@@ -74,13 +83,15 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('New volunteer','1');
+      await DatabaseService(uid: user!.uid).updateUserData('New volunteer','1', user_name, phone_number, pesel, chosen_category, user!.uid);
       return _userFromCredUser(user);
     } catch (error) {
       print(error.toString());
       return null;
     }
   }
+
+
 
 
 // sign out

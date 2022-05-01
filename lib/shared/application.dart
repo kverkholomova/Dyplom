@@ -4,14 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'constants.dart';
 
-List<String> chosen_category = [];
+
 
 var count = 0;
 
 String status = "Sent to volunteer";
+String volID = "";
 
 class Application extends StatefulWidget {
   @override
@@ -111,20 +113,23 @@ class _ApplicationState extends State<Application> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
+                    ID = FirebaseAuth.instance.currentUser?.uid;
                     await FirebaseFirestore.instance
                         .collection('applications')
                         .add({
-                      'title': (title==Null)?("Title"):(title),
+                      'title': (title == Null)?("Title"):(title),
                       'category': (currentCategory==Null)?("Category"):(currentCategory),
                       'comment': (comment==Null)?("Comment"):(comment),
                       'status': status,
+                      'userID': ID,
+                      'volunteerID': volID
                       //'volunteer_pref': currentCategory,
 
                      // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,
                     });
 
-                    ID = FirebaseFirestore.instance.collection('applications').doc().id;//FirebaseAuth.instance.currentUser?.uid;
-                    // id = ;
+
+                    //FirebaseAuth.instance.currentUser?.uid;
                   }),
             ],
           )),

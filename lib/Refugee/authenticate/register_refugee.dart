@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/shared/constants.dart';
 
-import '../../services/auth.dart';
-import '../../shared/loading.dart';
+import '../../../services/auth.dart';
+import '../../../shared/loading.dart';
+
+String passport_number = "";
 
 class RegisterRef extends StatefulWidget {
 
@@ -82,6 +84,7 @@ class _RegisterRefState extends State<RegisterRef> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
+
                     option_refugee=true;
                     if(_formKey.currentState!.validate()){
                       setState(() => loading = true);

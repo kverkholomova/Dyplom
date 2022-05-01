@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/screen_with_applications.dart';
-import 'package:wol_pro_1/settings_of_application.dart';
+import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 
-import '../option.dart';
+import '../../screens/option.dart';
 
 String card_title_accepted='';
 String card_category_accepted='';

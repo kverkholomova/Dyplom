@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/screens/authenticate/register_refugee.dart';
-import 'package:wol_pro_1/screens/authenticate/register_volunteer.dart';
-import 'package:wol_pro_1/screens/authenticate/sign_in_refugee.dart';
-import 'package:wol_pro_1/screens/authenticate/sign_in_volunteer.dart';
 
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
+
+import 'package:wol_pro_1/volunteer/authenticate/sign_in_volunteer.dart';
+
+import '../../Refugee/authenticate/register_refugee.dart';
+import '../../Refugee/authenticate/sign_in_refugee.dart';
 import '../option.dart';
 
 
@@ -40,7 +43,7 @@ class _AuthenticateState extends State<Authenticate> {
         return RegisterRef(toggleView:  toggleView);
       }
       else if(!option_refugee){
-        return RegisterVol(toggleView:  toggleView);
+        return RegisterVol1(toggleView:  toggleView);
       }
     return OptionChoose();
     }
