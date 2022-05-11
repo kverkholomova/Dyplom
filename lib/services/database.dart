@@ -17,7 +17,8 @@ class DatabaseService{
         'phone_number': phone,
         'pesel': pesel,
         'category': chosen_category,
-        'id_vol': id_vol
+        'id_vol': id_vol,
+
 
 
 

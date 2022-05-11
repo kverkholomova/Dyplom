@@ -1,10 +1,15 @@
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/volunteer/applications/info_volunteer_accepted_application.dart';
+import 'package:wol_pro_1/screens/info_volunteer_accepted_application.dart';
+import 'package:wol_pro_1/service/local_push_notifications.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
@@ -22,6 +27,35 @@ class PageOfApplicationRef extends StatefulWidget {
 
 class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
 
+  storeNotificationToken()async{
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set(
+        {
+          'token': token
+        },
+        SetOptions(merge: true));
+    print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    print(token);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseMessaging.instance.getInitialMessage();
+    FirebaseMessaging.onMessage.listen((event) {
+    });
+    storeNotificationToken();
+    FirebaseMessaging.instance.subscribeToTopic('subscription');
+    FirebaseMessaging.onMessage.listen((event){
+      LocalNotificationService.display(event);
+    });
+
+  }
+
+
+  final CollectionReference applications = FirebaseFirestore.instance.collection('applications');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +78,16 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             return ListView.builder(
                 itemCount: streamSnapshot.data?.docs.length,
-                itemBuilder: (ctx, index) =>
-                    Column(
+                itemBuilder: (ctx, index) {
+                  String? token;
+                  try{
+                    token = streamSnapshot.data!.docs[index]
+                        .get('token');
+                  }catch(e){}
+
+                  User? user = FirebaseAuth.instance.currentUser;
+                  final docId = streamSnapshot.data!.docs[index]["volunteerID"];
+                  return Column(
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 30),
@@ -63,9 +105,33 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                           child: Text(streamSnapshot.data?.docs[index]['comment'],style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 250,bottom: 20),
+                          child: SizedBox(
+                            height: 50,
+                            width: 300,
+                            child: MaterialButton(
+                                child: Text("Delete",style: TextStyle(color: Colors.white),),
+                                color: Color.fromRGBO(18, 56, 79, 0.8),
+
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('applications')
+                                      .doc(streamSnapshot.data?.docs[index].id).update({"status": "deleted"});
+
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => PageOfVolunteerRef()),
+                                  // );
+
+                                }
+                            ),
+                          ),
+                        ),
 
                         Padding(
-                          padding: const EdgeInsets.only(top: 350,bottom: 20),
+                          padding: const EdgeInsets.only(top: 20,bottom: 20),
                           child: SizedBox(
                             height: 50,
                             width: 300,
@@ -89,7 +155,8 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                           ),
                         )
                       ],
-                    ));
+                    );
+                });
           },
         ),
       ),

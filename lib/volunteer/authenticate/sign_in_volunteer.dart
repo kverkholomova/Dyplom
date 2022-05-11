@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/shared/loading.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
 
 import '../../shared/constants.dart';
+import '../applications/screen_with_applications.dart';
 
 class SignInVol extends StatefulWidget {
 
@@ -97,6 +100,7 @@ class _SignInVolState extends State<SignInVol> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
+
                           if(_formKey.currentState!.validate()){
                             setState(() => loading = true);
                             dynamic result = await _auth.signInWithEmailAndPasswordVol(email, password);

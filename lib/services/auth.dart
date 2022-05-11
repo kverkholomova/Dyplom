@@ -5,6 +5,7 @@ import 'package:wol_pro_1/shared/application.dart';
 
 
 import '../Refugee/authenticate/register_refugee.dart';
+import '../volunteer/applications/page_of_application_vol.dart';
 import '../volunteer/authenticate/register_volunteer.dart';
 import '../volunteer/authenticate/register_volunteer_1.dart';
 import '../cash/register_form.dart';
@@ -69,7 +70,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('New refugee','2', user_name, phone_number, passport_number,[],user.uid);
+      await DatabaseService(uid: user!.uid).updateUserData('New refugee','2', user_name, phone_number, passport_number,[], user.uid);
       return _userFromCredUser(user);
     } catch (error) {
       print(error.toString());

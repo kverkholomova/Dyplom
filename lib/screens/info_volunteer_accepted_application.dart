@@ -57,28 +57,10 @@ class _PageOfVolunteerRefState extends State<PageOfVolunteerRef> {
                           streamSnapshot.data?.docs[index]['phone_number'],
                           style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
 
+                        // Text(
+                        //   streamSnapshot.data?.docs[index]['date'],
+                        //   style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
 
-                        Padding(
-                          padding: const EdgeInsets.only(top: 350,bottom: 20),
-                          child: SizedBox(
-                            height: 50,
-                            width: 300,
-                            child: MaterialButton(
-                                child: Text("Look info about volunteer",style: TextStyle(color: Colors.white),),
-                                color: Color.fromRGBO(18, 56, 79, 0.8),
-
-                                onPressed: () {
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ApplicationsOfVolunteer()),
-                                  );
-
-                                }
-                            ),
-                          ),
-                        )
                       ],
                     ));
           },

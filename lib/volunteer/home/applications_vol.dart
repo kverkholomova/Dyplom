@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
 
 import '../../screens/option.dart';
 
 String card_title_accepted='';
 String card_category_accepted='';
 String card_comment_accepted='';
+
+
 
 class ApplicationsOfVolunteer extends StatefulWidget {
   const ApplicationsOfVolunteer({Key? key}) : super(key: key);
@@ -17,8 +21,12 @@ class ApplicationsOfVolunteer extends StatefulWidget {
 }
 
 class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
+
+
   @override
   Widget build(BuildContext context) {
+
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.push(
@@ -47,7 +55,9 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('applications')
+                .where("volunteerID", isEqualTo: userID_vol)
                 .where("status", isEqualTo: 'Application is accepted')
+
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               return ListView.builder(

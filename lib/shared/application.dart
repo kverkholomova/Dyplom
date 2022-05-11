@@ -122,7 +122,8 @@ class _ApplicationState extends State<Application> {
                       'comment': (comment==Null)?("Comment"):(comment),
                       'status': status,
                       'userID': ID,
-                      'volunteerID': volID
+                      'volunteerID': volID,
+                      'date': null
                       //'volunteer_pref': currentCategory,
 
                      // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,

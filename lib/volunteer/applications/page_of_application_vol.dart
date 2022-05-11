@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
-
+DateTime date = DateTime.now();
 class PageOfApplication extends StatefulWidget {
   const PageOfApplication({Key? key}) : super(key: key);
 
@@ -79,6 +79,9 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                     FirebaseFirestore.instance
                                         .collection('applications')
                                         .doc(streamSnapshot.data?.docs[index].id).update({"volunteerID": volID});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"date": DateTime.now()});
 
                                     print(streamSnapshot.data?.docs[index].id);
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance

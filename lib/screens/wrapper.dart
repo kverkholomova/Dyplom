@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:wol_pro_1/screens/authenticate/authenticate.dart';
 import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/cash/register_form.dart';
+import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 
 import '../Refugee/home/home_ref.dart';
 import '../models/user.dart';
+import '../volunteer/applications/screen_with_applications.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class Wrapper extends StatelessWidget {
     } else if(option_refugee){
       return HomeRef();
     }else if(!option_refugee){
-      return VolunteerRegisterForm();
+      return SettingsHomeVol();
     }
     else{
       return OptionChoose();

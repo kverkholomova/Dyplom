@@ -1,5 +1,7 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
@@ -7,11 +9,17 @@ import 'package:wol_pro_1/models/users_all.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/services/database.dart';
 import 'package:provider/provider.dart';
-
 import 'package:wol_pro_1/shared/application.dart';
 
 
-class HomeRef extends StatelessWidget {
+class HomeRef extends StatefulWidget {
+  const HomeRef({Key? key}) : super(key: key);
+
+  @override
+  State<HomeRef> createState() => _HomeRefState();
+}
+
+class _HomeRefState extends State<HomeRef> {
 
 
   final AuthService _auth = AuthService();

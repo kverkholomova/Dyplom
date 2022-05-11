@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
 
 import 'package:wol_pro_1/screens/wrapper.dart';
@@ -16,6 +21,15 @@ class OptionChoose extends StatefulWidget {
 }
 
 class _OptionChooseState extends State<OptionChoose> {
+
+  late FirebaseMessaging messaging;
+  @override
+  void initState() {
+    super.initState();
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value){
+      print(value);
+    });}
 
   bool loading = false;
 
@@ -39,8 +53,8 @@ class _OptionChooseState extends State<OptionChoose> {
                   child: MaterialButton(
                   color: const Color.fromRGBO(137, 102, 120, 0.8),
                   child: const Text('Volunteer'),
-                  onPressed: () {
-                    chosen_category = [];
+                  onPressed: () async{
+
                     option_refugee=false;
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const Wrapper()));
                   },

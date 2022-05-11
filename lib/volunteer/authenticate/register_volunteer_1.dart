@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
@@ -12,12 +13,20 @@ List<String> chosen_category = [];
 String user_name = '';
 String phone_number = '';
 String pesel = '';
+// List standart = ["Transfer"];
+
+
+//
+// List categories_volunteer = FirebaseAuth.instance.currentUser.uid.
+// (chosen_category != null)?chosen_category:standart;
 //
 // String firstCategory='';
 // String secondCategory='';
 // String thirdCategory='';
 
 class RegisterVol1 extends StatefulWidget {
+
+
 
   final Function toggleView;
   RegisterVol1({ required this.toggleView });

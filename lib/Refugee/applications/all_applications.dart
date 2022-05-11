@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart';
 import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
@@ -28,6 +32,82 @@ class CategoriesRef extends StatefulWidget {
 }
 
 class CategoriesRefState extends State<CategoriesRef> {
+
+  late AndroidNotificationChannel channel;
+
+  /// Initialize the [FlutterLocalNotificationsPlugin] package.
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  @override
+  void initState(){
+    super.initState();
+    loadFCM();
+    listenFCM();
+    getToken();
+  }
+
+  void getToken() async{
+    await FirebaseMessaging.instance.getToken().then((token) {
+      print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+      print(token);});
+  }
+  void listenFCM() async{
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+
+  void loadFCM()async{
+    if (!kIsWeb) {
+      channel = const AndroidNotificationChannel(
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+
+        importance: Importance.high,
+        enableVibration: true,
+      );
+
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+      /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      /// Update the iOS foreground notification presentation options to allow
+      /// heads up notifications.
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+  }
+
 
 
   bool loading = false;
@@ -80,7 +160,7 @@ class CategoriesRefState extends State<CategoriesRef> {
                 stream: FirebaseFirestore.instance
 
                     .collection('applications')
-                .where('userID', isEqualTo: userID_ref)
+                    .where('userID', isEqualTo: userID_ref)
 
 
 
