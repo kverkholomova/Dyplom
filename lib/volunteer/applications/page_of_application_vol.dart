@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
-DateTime date = DateTime.now();
+String date = '';
+// DateTime date = DateTime.now();
 class PageOfApplication extends StatefulWidget {
   const PageOfApplication({Key? key}) : super(key: key);
 
@@ -73,6 +74,7 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                   color: Color.fromRGBO(18, 56, 79, 0.8),
 
                                   onPressed: () {
+                                    date = DateTime.now().toString();
                                     FirebaseFirestore.instance
                                         .collection('applications')
                                         .doc(streamSnapshot.data?.docs[index].id).update({"status": status_updated});
@@ -81,7 +83,7 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                         .doc(streamSnapshot.data?.docs[index].id).update({"volunteerID": volID});
                                     FirebaseFirestore.instance
                                         .collection('applications')
-                                        .doc(streamSnapshot.data?.docs[index].id).update({"date": DateTime.now()});
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"date": date});
 
                                     print(streamSnapshot.data?.docs[index].id);
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance

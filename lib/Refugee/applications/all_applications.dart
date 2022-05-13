@@ -202,26 +202,25 @@ class CategoriesRefState extends State<CategoriesRef> {
 
                               },
                               child: Card(
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        //streamSnapshot.data?.docs[index]['title']==null ?
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      //streamSnapshot.data?.docs[index]['title']==null ?
 
-                                        Text(
-                                          streamSnapshot.data?.docs[index]['title'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),//: Text('nic'),
-                                        Text(
-                                            streamSnapshot.data?.docs[index]
-                                            ['category'] as String,
-                                            style: TextStyle(color: Colors.grey)),
-                                        Text(streamSnapshot.data?.docs[index]
-                                        ['comment'] as String),
-                                      ],
-                                    ),
+                                      Text(
+                                        streamSnapshot.data?.docs[index]['title'],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),//: Text('nic'),
+                                      Text(
+                                          streamSnapshot.data?.docs[index]
+                                          ['category'] as String,
+                                          style: TextStyle(color: Colors.grey)),
+                                      Text(streamSnapshot.data?.docs[index]
+                                      ['comment'] as String),
+
+                                    ],
                                   ),
                                 ),
                               ),

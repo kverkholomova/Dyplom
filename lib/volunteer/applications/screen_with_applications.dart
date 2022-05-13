@@ -95,6 +95,10 @@ class CategoriesState extends State<Categories> {
     }
 
   @override
+
+  void initState() {
+
+  }
   Widget build(BuildContext context) {
 
     // DocumentReference docRef = FirebaseFirestore.instance.collection("users").doc(userID_vol);
@@ -131,17 +135,18 @@ class CategoriesState extends State<Categories> {
     //   return productId;
     // }
 
-    // Future getList() async{
-    //   DocumentReference docRef = users_cat.doc();
-    //   var data;
-    //   docRef.get().then((datasnapshot){
-    //       data = datasnapshot.get("category");
-    //   });
-    //   return data;
-    // }
-    //
-    // print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-    // print(getList());
+    Future getList() async{
+      DocumentReference docRef = users_cat.doc();
+      var data;
+      docRef.get().then((datasnapshot){
+          data = datasnapshot.get("category");
+      });
+      return data;
+    }
+
+    print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+
+
 
     // array() {
     //   var x = users_cat.where("id_vol", isEqualTo: userID_vol).get().then((
@@ -316,8 +321,9 @@ class CategoriesState extends State<Categories> {
                                       Text(
                                         streamSnapshot.data?.docs[index]['title'],
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),//: Text('nic'),
+                                            fontWeight: FontWeight.bold, ),
+                                        textAlign: TextAlign.left,
+                                      ),
                                       Text(
                                           streamSnapshot.data?.docs[index]
                                           ['category'] as String,
