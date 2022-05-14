@@ -12,6 +12,7 @@ import 'package:wol_pro_1/service/local_push_notifications.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
+import '../../notification_api.dart';
 import 'all_applications.dart';
 
 String IDVolOfApplication = '';
@@ -153,6 +154,12 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                               ),
                               color: Color.fromRGBO(18, 56, 79, 0.8),
                               onPressed: () {
+
+                                NotificationApi.showNotification(
+                                    title: "Application was deleted",
+                                    body: "Refugee deleted application, so it was removed from the list of your applications"
+                                );
+
                                 FirebaseFirestore.instance
                                     .collection('applications')
                                     .doc(streamSnapshot.data?.docs[index].id)
