@@ -24,6 +24,7 @@ String card_category_ref='';
 String card_comment_ref='';
 
 String userID_ref = '';
+String? token_vol;
 
 class CategoriesRef extends StatefulWidget {
   const CategoriesRef({Key? key}) : super(key: key);
@@ -116,6 +117,7 @@ class CategoriesRefState extends State<CategoriesRef> {
                                   card_category_ref=streamSnapshot.data?.docs[index]['category'] as String;
                                   card_comment_ref=streamSnapshot.data?.docs[index]['comment'] as String;
                                   application_ID = streamSnapshot.data?.docs[index].id as String;
+                                  token_vol=streamSnapshot.data?.docs[index]["token_vol"]as String;
                                   print(card_title_ref);
                                   print(card_category_ref);
                                   print(card_comment_ref);

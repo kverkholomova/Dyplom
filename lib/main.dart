@@ -10,9 +10,11 @@ import 'package:wol_pro_1/services/auth.dart';
 import 'models/user.dart';
 
 
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
-  /// On click listner
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
 }
 
 void main() async{

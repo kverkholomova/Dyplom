@@ -33,6 +33,8 @@ class Categories extends StatefulWidget {
 }
 
 class CategoriesState extends State<Categories> {
+
+
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   bool loading = false;
