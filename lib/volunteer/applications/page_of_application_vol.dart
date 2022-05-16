@@ -2,11 +2,15 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
+import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
+
+import '../../service/local_push_notifications.dart';
 
 String date = '';
 // DateTime date = DateTime.now();
@@ -20,10 +24,44 @@ class PageOfApplication extends StatefulWidget {
 var ID_of_vol_application;
 class _PageOfApplicationState extends State<PageOfApplication> {
 
+  // DocumentReference<Map<String, dynamic>> token_vol = FirebaseFirestore.instance
+  //     .collection('users')
+  //     .doc(userID_vol).;
+  //
+
+  // storeNotificationToken() async {
+  //   String? token_vol = await FirebaseMessaging.instance.getToken();
+  //   print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+  //   print(token_vol);
+  //   FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .set({'token': token_vol}, SetOptions(merge: true));
+  //   print(
+  //       "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+  //   print(token_vol);
+  //   return token_vol;
+  // }
+  //
+  // String token_vol = '';
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   FirebaseMessaging.instance.getInitialMessage();
+  //   FirebaseMessaging.onMessage.listen((event) {});
+  //   storeNotificationToken();
+  //   FirebaseMessaging.instance.subscribeToTopic('subscription');
+  //   FirebaseMessaging.onMessage.listen((event) {
+  //     LocalNotificationService.display(event);
+  //   });
+  // }
+
   //var id = "";
 
   String status_updated='Application is accepted';
   String volID = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,10 +122,14 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                     FirebaseFirestore.instance
                                         .collection('applications')
                                         .doc(streamSnapshot.data?.docs[index].id).update({"date": date});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"token_vol": token_vol});
 
                                     print(streamSnapshot.data?.docs[index].id);
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance
                                     .collection('applications').doc().id}");
+
 
                                    ID_of_vol_application=streamSnapshot.data?.docs[index].id;
                                     Navigator.push(

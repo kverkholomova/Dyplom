@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,6 +17,9 @@ import '../../notification_api.dart';
 import 'all_applications.dart';
 
 String IDVolOfApplication = '';
+// String? token;
+final FirebaseFirestore _db = FirebaseFirestore.instance;
+final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
 class PageOfApplicationRef extends StatefulWidget {
   const PageOfApplicationRef({Key? key}) : super(key: key);
@@ -25,31 +29,34 @@ class PageOfApplicationRef extends StatefulWidget {
 }
 
 class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
-  storeNotificationToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-    print(token);
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({'token': token}, SetOptions(merge: true));
-    print(
-        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-    print(token);
-  }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    FirebaseMessaging.instance.getInitialMessage();
-    FirebaseMessaging.onMessage.listen((event) {});
-    storeNotificationToken();
-    FirebaseMessaging.instance.subscribeToTopic('subscription');
-    FirebaseMessaging.onMessage.listen((event) {
-      LocalNotificationService.display(event);
-    });
-  }
+// String token = '';
+//
+//   storeNotificationToken() async {
+//     String? token = await FirebaseMessaging.instance.getToken();
+//     print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+//     print(token);
+//     FirebaseFirestore.instance
+//         .collection('users')
+//         .doc(FirebaseAuth.instance.currentUser!.uid)
+//         .set({'token': token}, SetOptions(merge: true));
+//     print(
+//         "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+//     print(token);
+//   }
+//
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     FirebaseMessaging.instance.getInitialMessage();
+//     FirebaseMessaging.onMessage.listen((event) {});
+//     storeNotificationToken();
+//     FirebaseMessaging.instance.subscribeToTopic('subscription');
+//     FirebaseMessaging.onMessage.listen((event) {
+//       LocalNotificationService.display(event);
+//     });
+//   }
 
   final CollectionReference applications =
       FirebaseFirestore.instance.collection('applications');
@@ -77,17 +84,17 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
             return ListView.builder(
                 itemCount: streamSnapshot.data?.docs.length,
                 itemBuilder: (ctx, index) {
-                  String? token;
-                  try {
-                    token = streamSnapshot.data!.docs[index].get('token');
-                    print(
-                        "---------------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-                    print(token);
-                  } catch (e) {
-                    print(
-                        "--------!!$index-------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-                    print(e);
-                  }
+                  // String? token;
+                  // try {
+                  //   token = streamSnapshot.data!.docs[index].get('token');
+                  //   print(
+                  //       "---------------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+                  //   print(token);
+                  // } catch (e) {
+                  //   print(
+                  //       "--------!!$index-------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+                  //   print(e);
+                  // }
 
                   User? user = FirebaseAuth.instance.currentUser;
                   final docId = streamSnapshot.data!.docs[index]["volunteerID"];
@@ -154,11 +161,40 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                               ),
                               color: Color.fromRGBO(18, 56, 79, 0.8),
                               onPressed: () {
+                               // token = FirebaseFirestore.instance
+                               //      .collection('applications')
+                               //      .doc(streamSnapshot.data?.docs[index]["token_vol"]) as String?;
+                               //
+                               //  // NotificationApi.showNotification(
+                               //  //
+                               //  //     title: "Application was deleted",
+                               //  //     body: "Refugee deleted application, so it was removed from the list of your applications"
+                               //  // );
+                               //
+                               //  _fcm.sendMessage(
+                               //    to: token,
+                               //    data: {
+                               //
+                               //    }
+                               //
+                               //  );
 
-                                NotificationApi.showNotification(
-                                    title: "Application was deleted",
-                                    body: "Refugee deleted application, so it was removed from the list of your applications"
-                                );
+
+                                // FirebaseFirestore.instance.collection('applications').get().then((snapshot) => {
+                                // snapshot.docs.forEach((doc){
+                                //
+                                // const userData = ;
+                                //
+                                // if (doc.get("category") == "deleted") {
+                                // FirebaseMessaging().sendToDevice(userData.deviceToken, {
+                                // notification: {
+                                // title: 'Notification title', body: 'Notification Body'}
+                                // });
+                                // }
+                                // });
+                                // });
+
+
 
                                 FirebaseFirestore.instance
                                     .collection('applications')

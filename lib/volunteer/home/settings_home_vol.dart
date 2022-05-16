@@ -1,7 +1,6 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +8,14 @@ import 'package:wol_pro_1/Refugee/applications/application_info.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
+import '../../service/local_push_notifications.dart';
+
 
 List? categories_user;
+String? token_vol;
+final FirebaseFirestore _db = FirebaseFirestore.instance;
+final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
 class SettingsHomeVol extends StatefulWidget {
   const SettingsHomeVol({Key? key}) : super(key: key);
 
@@ -20,6 +25,59 @@ class SettingsHomeVol extends StatefulWidget {
 
 
 class _SettingsHomeVolState extends State<SettingsHomeVol> {
+
+  /// Get the token, save it to the database for current user
+  // _saveDeviceToken() async {
+  //   // Get the current user
+  //   // String uid = FirebaseAuth.instance.currentUser!.uid;
+  //   // FirebaseUser user = await _auth.currentUser();
+  //
+  //   // Get the token for this device
+  //   String? fcmToken = await _fcm.getToken();
+  //
+  //   // // Save it to Firestore
+  //   // if (fcmToken != null) {
+  //   //   var tokens = _db
+  //   //       .collection('users')
+  //   //       .doc(uid)
+  //   //       .collection('tokens')
+  //   //       .doc(fcmToken);
+  //   //
+  //   //   await tokens.set({
+  //   //     'token': fcmToken,
+  //   //     'createdAt': FieldValue.serverTimestamp(), // optional
+  //   //
+  //   //   });
+  //   // }
+  // }
+
+  // String token = '';
+  //
+  storeNotificationToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    print(token);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({'token': token}, SetOptions(merge: true));
+    print(
+        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    print(token);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseMessaging.instance.getInitialMessage();
+    FirebaseMessaging.onMessage.listen((event) {});
+    storeNotificationToken();
+    FirebaseMessaging.instance.subscribeToTopic('subscription');
+    FirebaseMessaging.onMessage.listen((event) {
+      LocalNotificationService.display(event);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +101,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                 itemCount: streamSnapshot.data?.docs.length,
                 itemBuilder: (ctx, index) {
                   categories_user = streamSnapshot.data?.docs[index]['category'];
+                  token_vol = streamSnapshot.data?.docs[index]['token'];
                   return Column(
                       children: [
                         Padding(

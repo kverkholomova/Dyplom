@@ -298,6 +298,7 @@ class CategoriesState extends State<Categories> {
                                 card_title=streamSnapshot.data?.docs[index]['title'] as String;
                                 card_category=streamSnapshot.data?.docs[index]['category'] as String;
                                 card_comment=streamSnapshot.data?.docs[index]['comment'] as String;
+
                                 print(card_title);
                                 print(card_category);
                                 print(card_comment);
