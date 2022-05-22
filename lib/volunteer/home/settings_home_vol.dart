@@ -4,13 +4,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/Refugee/applications/application_info.dart';
+import 'package:wol_pro_1/chatPage.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 import '../../service/local_push_notifications.dart';
 
-
+String current_name = '';
 List? categories_user;
 String? token_vol;
 final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -79,6 +81,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,6 +105,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                 itemBuilder: (ctx, index) {
                   categories_user = streamSnapshot.data?.docs[index]['category'];
                   token_vol = streamSnapshot.data?.docs[index]['token'];
+                  current_name = streamSnapshot.data?.docs[index]['user_name'];
                   return Column(
                       children: [
                         Padding(
@@ -139,6 +143,27 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                 onPressed: () {
 
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 40),
+                          child: Center(
+                            child: Container(
+                              width: 200,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                              child: MaterialButton(
+                                color: const Color.fromRGBO(137, 102, 120, 0.8),
+                                child: const Text('Messages'),
+                                onPressed: () {
+
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
                                 },
                               ),
                             ),

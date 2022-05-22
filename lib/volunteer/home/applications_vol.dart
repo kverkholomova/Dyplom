@@ -10,7 +10,7 @@ import '../../screens/option.dart';
 String card_title_accepted='';
 String card_category_accepted='';
 String card_comment_accepted='';
-
+String current_name = '';
 
 
 class ApplicationsOfVolunteer extends StatefulWidget {
@@ -72,6 +72,7 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
                                 card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
                                 card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
                                 card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
+                                // current_name = streamSnapshot.data?.docs[index]['ref_name'];
 
                                 Navigator.push(
                                   context,

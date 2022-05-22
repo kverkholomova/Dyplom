@@ -1,234 +1,207 @@
-import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FirebaseChatroomExample extends StatefulWidget {
-  const FirebaseChatroomExample({Key? key}) : super(key: key);
-
-  @override
-  _FirebaseChatroomExampleState createState() =>
-      _FirebaseChatroomExampleState();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "",
+        appId: "",
+        messagingSenderId: "",
+        projectId: "",
+      ));
+  runApp(MyApp());
 }
 
-class _FirebaseChatroomExampleState extends State<FirebaseChatroomExample> {
-  firebase_auth.User? _user;
-  late DatabaseReference _firebaseMsgDbRef;
-
-  final TextEditingController _textController = TextEditingController();
-  bool _isComposing = false;
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    super.initState();
-    final now = DateTime.now().toUtc();
-    this._firebaseMsgDbRef = FirebaseDatabase.instance
-        .ref()
-        .child('messages/${now.year}/${now.month}/${now.day}');
-    this._user = firebase_auth.FirebaseAuth.instance.currentUser;
-  }
+  _MyAppState createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        leading: IconButton(
-          icon: const Icon(Icons.info),
-          onPressed: () => _showNoteDialog(context),
-        ),
-        title: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Text(
-            _user == null ? 'Chatting' : 'Chatting as "${_user!.displayName}"',
-          ),
-        ),
+    return MaterialApp(
+      title: 'chat',
+      theme: ThemeData(
+        primaryColor: Colors.orange,
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            _buildMessagesList(),
-            const Divider(height: 2.0),
-            _buildComposeMsgRow()
-          ],
-        ),
-      ),
-    );
-  }
+      // home: Home(),
 
-  void _showNoteDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Note'),
-        content: const Text(
-          'This chat room is only for demo purposes.\n\n'
-              'The chat messages are publicly available, and they '
-              'can be deleted at any time by the firebase admin.\n\n'
-              'To send messages, you must log in '
-              'in the "Firebase login" demo.',
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('OK'),
-          )
-        ],
-      ),
+      debugShowCheckedModeBanner: false,
     );
-  }
-
-  // Builds the list of chat messages.
-  Widget _buildMessagesList() {
-    return Flexible(
-      child: Scrollbar(
-        child: FirebaseAnimatedList(
-          defaultChild: const Center(child: CircularProgressIndicator()),
-          query: _firebaseMsgDbRef,
-          sort: (a, b) => b.key!.compareTo(a.key!),
-          padding: const EdgeInsets.all(8.0),
-          reverse: true,
-          itemBuilder: (
-              BuildContext ctx,
-              DataSnapshot snapshot,
-              Animation<double> animation,
-              int idx,
-              ) =>
-              _messageFromSnapshot(snapshot, animation),
-        ),
-      ),
-    );
-  }
-
-  // Returns the UI of one message from a data snapshot.
-  Widget _messageFromSnapshot(
-      DataSnapshot snapshot,
-      Animation<double> animation,
-      ) {
-    final val = snapshot.value;
-    if (val == null) {
-      return Container();
-    }
-    final json = val as Map;
-    final senderName = json['senderName'] as String? ?? '?? <unknown>';
-    final msgText = json['text'] as String? ?? '??';
-    final sentTime = json['timestamp'] as int? ?? 0;
-    final senderPhotoUrl = json['senderPhotoUrl'] as String?;
-    final messageUI = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: senderPhotoUrl != null
-                ? CircleAvatar(
-              backgroundImage: NetworkImage(senderPhotoUrl),
-            )
-                : CircleAvatar(
-              child: Text(senderName[0]),
-            ),
-          ),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(senderName, style: Theme.of(context).textTheme.subtitle1),
-                Text(
-                  DateTime.fromMillisecondsSinceEpoch(sentTime).toString(),
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Text(msgText),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    return SizeTransition(
-      sizeFactor: CurvedAnimation(
-        parent: animation,
-        curve: Curves.easeOut,
-      ),
-      child: messageUI,
-    );
-  }
-
-  // Builds the row for composing and sending message.
-  Widget _buildComposeMsgRow() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-      decoration: BoxDecoration(color: Theme.of(context).cardColor),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Flexible(
-            child: TextField(
-              keyboardType: TextInputType.multiline,
-              // Setting maxLines=null makes the text field auto-expand when one
-              // line is filled up.
-              maxLines: null,
-              maxLength: 200,
-              decoration:
-              const InputDecoration.collapsed(hintText: "Send a message"),
-              controller: _textController,
-              onChanged: (String text) =>
-                  setState(() => _isComposing = text.isNotEmpty),
-              onSubmitted: _onTextMsgSubmitted,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: _isComposing
-                ? () => _onTextMsgSubmitted(_textController.text)
-                : null,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Triggered when text is submitted (send button pressed).
-  Future<void> _onTextMsgSubmitted(String text) async {
-    // Make sure _user is not null.
-    if (this._user == null) {
-      this._user = firebase_auth.FirebaseAuth.instance.currentUser;
-    }
-    if (this._user == null) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Login required'),
-          content: const Text(
-            'To send messages you need to first log in.\n\n'
-                'Go to the "Firebase login" example, and log in from there. '
-                'You will then be able to send messages.',
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('OK'),
-            )
-          ],
-        ),
-      );
-      return;
-    }
-    // Clear input text field.
-    _textController.clear();
-    setState(() {
-      _isComposing = false;
-    });
-    // Send message to firebase realtime database.
-    _firebaseMsgDbRef.push().set({
-      'senderId': this._user!.uid,
-      'senderName': this._user!.displayName,
-      'senderPhotoUrl': this._user!.photoURL,
-      'text': text,
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
-    });
   }
 }
+// import 'package:cloud_firestore/cloud_firestore.dart';
+//
+// class ChatMessages {
+//   String idFrom;
+//   String idTo;
+//   String timestamp;
+//   String content;
+//   int type;
+//
+//   ChatMessages(
+//       {required this.idFrom,
+//         required this.idTo,
+//         required this.timestamp,
+//         required this.content,
+//         required this.type});
+//
+//   Map<String, dynamic> toJson() {
+//     return {
+//       idFrom: idFrom,
+//       idTo: idTo,
+//       timestamp: timestamp,
+//       content: content,
+//       // type: type,
+//     };
+//   }
+//
+//   factory ChatMessages.fromDocument(DocumentSnapshot documentSnapshot) {
+//     String idFrom = documentSnapshot.get("idFrom");
+//     String idTo = documentSnapshot.get("idTo");
+//     String timestamp = documentSnapshot.get("timestamp");
+//     String content = documentSnapshot.get("content");
+//     int type = documentSnapshot.get("type");
+//
+//     return ChatMessages(
+//         idFrom: idFrom,
+//         idTo: idTo,
+//         timestamp: timestamp,
+//         content: content,
+//         type: type);
+//   }
+// }
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
+// import 'package:wol_pro_1/screens/option.dart';
+//
+// class HomeChat extends StatefulWidget {
+//   const HomeChat({Key? key}) : super(key: key);
+//
+//   @override
+//   State<HomeChat> createState() => _HomeChatState();
+// }
+//
+// class _HomeChatState extends State<HomeChat> {
+
+  // Future<void> updateFirestoreData(
+  //     String collectionPath, String path, Map<String, dynamic> updateData) {
+  //   return FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .update(updateData);
+  // }
+  //
+  // Stream<QuerySnapshot> getFirestoreData(
+  //     String collectionPath, int limit, String? textSearch) {
+  //   if (textSearch?.isNotEmpty == true) {
+  //     return FirebaseFirestore.instance
+  //         .collection(collectionPath)
+  //         .limit(limit)
+  //         .where(displayName, isEqualTo: textSearch)
+  //         .snapshots();
+  //   } else {
+  //     return FirebaseFirestore.instance
+  //         .collection(collectionPath)
+  //         .limit(limit)
+  //         .snapshots();
+  //   }
+  // }
+  //
+  // Widget buildSearchBar() {
+  //   return Container(
+  //     margin:  EdgeInsets.all(10),
+  //     height: 50,
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         const SizedBox(
+  //           width: 10,
+  //         ),
+  //         const Icon(
+  //           Icons.person_search,
+  //           color: Colors.white,
+  //           size: 24,
+  //         ),
+  //         const SizedBox(
+  //           width: 5,
+  //         ),
+  //         Expanded(
+  //           child: TextFormField(
+  //             textInputAction: TextInputAction.search,
+  //             // controller: searchTextEditingController,
+  //             // onChanged: (value) {
+  //             //   if (value.isNotEmpty) {
+  //             //     buttonClearController.add(true);
+  //             //     setState(() {
+  //             //       _textSearch = value;
+  //             //     });
+  //             //   } else {
+  //             //     buttonClearController.add(false);
+  //             //     setState(() {
+  //             //       _textSearch = "";
+  //             //     });
+  //             //   }
+  //             // },
+  //             decoration: const InputDecoration.collapsed(
+  //               hintText: 'Search here...',
+  //               hintStyle: TextStyle(color: Colors.white),
+  //             ),
+  //           ),
+  //         ),
+  //         StreamBuilder(
+  //             // stream: buttonClearController.stream,
+  //             builder: (context, snapshot) {
+  //               return snapshot.data == true
+  //                   ? GestureDetector(
+  //                 onTap: () {
+  //                   // searchTextEditingController.clear();
+  //                   // buttonClearController.add(false);
+  //                   // setState(() {
+  //                   //   _textSearch = '';
+  //                   // });
+  //                 },
+  //                 child: const Icon(
+  //                   Icons.clear_rounded,
+  //                   color: Colors.grey,
+  //                   size: 20,
+  //                 ),
+  //               )
+  //                   : const SizedBox.shrink();
+  //             })
+  //       ],
+  //     ),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(30),
+  //       color: Colors.blueGrey,
+  //     ),
+  //   );
+  // }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//           centerTitle: true,
+//           title: const Text('Smart Talk'),
+//           actions: [
+//
+//             IconButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                           builder: (context) => OptionChoose()));
+//                 },
+//                 icon: const Icon(Icons.person)),
+//           ]),);
+//   }
+// }
