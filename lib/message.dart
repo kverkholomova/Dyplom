@@ -1,28 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 
 class messages extends StatefulWidget {
+
   String name;
-  messages({required this.name});
+  messages({ required this.name});
   @override
-  _messagesState createState() => _messagesState(name:name);
+  _messagesState createState() => _messagesState( name:name);
 }
 
 class _messagesState extends State<messages> {
+
   String name;
-  _messagesState({required this.name});
+  _messagesState({ required this.name});
 
   Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
       .collection('Messages')
+      // .where("id_of_adressee", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
       .orderBy('time')
       .snapshots();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _messageStream,
+      stream: FirebaseFirestore.instance
+          .collection('Messages')
+          // .where("id_of_adressee", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+
+          .orderBy('time')
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs");
+        print(FirebaseAuth.instance.currentUser?.uid);
         if (snapshot.hasError) {
-          return Text("something is wrong");
+          return Text("Something is wrong");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(

@@ -1,7 +1,11 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+String? ID = FirebaseAuth.instance.currentUser?.uid;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,7 +13,7 @@ Future<void> main() async {
       options: FirebaseOptions(
         apiKey: "",
         appId: "",
-        messagingSenderId: "",
+        messagingSenderId: '',
         projectId: "",
       ));
   runApp(MyApp());
@@ -26,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'chat',
+      title: 'Chat',
       theme: ThemeData(
         primaryColor: Colors.orange,
       ),

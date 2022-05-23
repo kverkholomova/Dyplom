@@ -20,7 +20,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform,
+
+      // options: FirebaseOptions(
+      //   apiKey: "",
+      //   appId: "",
+      //   messagingSenderId: "",
+      //   projectId: "",
+      // )
+        // options: DefaultFirebaseOptions.currentPlatform,
   );
   LocalNotificationService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -29,12 +36,8 @@ void main() async{
 }
 
 
-
-
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
 
   // This widget is the root of your application.
   @override

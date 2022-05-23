@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/Refugee/applications/application_info.dart';
 import 'package:wol_pro_1/chatPage.dart';
+import 'package:wol_pro_1/chat_3/HomePage_3.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
+import '../../chat_2/views/chat.dart';
 import '../../service/local_push_notifications.dart';
 
 String current_name = '';
@@ -162,8 +164,10 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                 color: const Color.fromRGBO(137, 102, 120, 0.8),
                                 child: const Text('Messages'),
                                 onPressed: () {
-
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage_3()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatRoomId: '',)));
                                 },
                               ),
                             ),

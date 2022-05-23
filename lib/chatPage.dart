@@ -81,7 +81,9 @@ class _ChatPageState extends State<ChatPage> {
                         borderRadius: new BorderRadius.circular(10),
                       ),
                     ),
-                    validator: (value) {},
+                    validator: (value) {
+
+                    },
                     onSaved: (value) {
                       message.text = value!;
                     },
