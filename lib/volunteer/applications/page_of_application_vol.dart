@@ -13,6 +13,7 @@ import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 import '../../service/local_push_notifications.dart';
 
 String date = '';
+
 // DateTime date = DateTime.now();
 class PageOfApplication extends StatefulWidget {
   const PageOfApplication({Key? key}) : super(key: key);

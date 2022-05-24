@@ -12,6 +12,7 @@ import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:wol_pro_1/shared/application.dart';
+import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 
@@ -124,7 +125,10 @@ class _HomeRefState extends State<HomeRef> {
                     onPressed: () {
                       print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                       print(userID_ref);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: "Karina")));
+
+
+
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: "Karina")));
                     }
                 ),
               ),

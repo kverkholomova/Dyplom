@@ -14,7 +14,7 @@ import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import '../../chat_2/views/chat.dart';
 import '../../service/local_push_notifications.dart';
 
-String current_name = '';
+String current_name_Vol = '';
 List? categories_user;
 String? token_vol;
 final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -107,7 +107,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                 itemBuilder: (ctx, index) {
                   categories_user = streamSnapshot.data?.docs[index]['category'];
                   token_vol = streamSnapshot.data?.docs[index]['token'];
-                  current_name = streamSnapshot.data?.docs[index]['user_name'];
+                  current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                   return Column(
                       children: [
                         Padding(
@@ -143,7 +143,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                 color: const Color.fromRGBO(137, 102, 120, 0.8),
                                 child: const Text('Applications'),
                                 onPressed: () {
-
+                                  current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));
                                 },
                               ),
@@ -165,7 +165,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                 child: const Text('Messages'),
                                 onPressed: () {
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage_3()));
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatRoomId: '',)));
                                 },

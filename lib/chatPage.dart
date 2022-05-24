@@ -8,15 +8,15 @@ import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 import 'message.dart';
 
 class ChatPage extends StatefulWidget {
-  String name;
-  ChatPage({required this.name});
+  // String name;
+  // ChatPage({required this.name});
   @override
-  _ChatPageState createState() => _ChatPageState(name: name);
+  _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  String name;
-  _ChatPageState({required this.name});
+  // String name;
+  // _ChatPageState({required this.name});
 
   final fs = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -57,7 +57,7 @@ class _ChatPageState extends State<ChatPage> {
             Container(
               height: MediaQuery.of(context).size.height * 0.79,
               child: messages(
-                name: name,
+                name: "name",
               ),
             ),
             Row(
@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
                       fs.collection('Messages').doc().set({
                         'message': message.text.trim(),
                         'time': DateTime.now(),
-                        'name': name,
+                        'name': "name",
                       });
                       message.clear();
                     }

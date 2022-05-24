@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wol_pro_1/Refugee/SettingRefugee.dart';
 import 'package:wol_pro_1/screens/authenticate/authenticate.dart';
 import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/cash/register_form.dart';
@@ -19,7 +20,7 @@ class Wrapper extends StatelessWidget {
     if (user==null){
       return Authenticate();
     } else if(option_refugee){
-      return HomeRef();
+      return SettingsHomeRef();
     }else if(!option_refugee){
       return SettingsHomeVol();
     }

@@ -1,22 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/Refugee/pageWithChats.dart';
 import 'package:wol_pro_1/select_chatroom.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 
-class messages extends StatefulWidget {
+class messagesRef extends StatefulWidget {
   //
   String? name;
-  messages({ required this.name});
+  messagesRef({ required this.name});
   @override
-  _messagesState createState() => _messagesState(name: name);
+  _messagesRefState createState() => _messagesRefState(name: name);
 }
 
-class _messagesState extends State<messages> {
+class _messagesRefState extends State<messagesRef> {
 
   String? name;
-  _messagesState({ required this.name});
+  _messagesRefState({ required this.name});
   //
   // Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
   //     .collection('Messages')
@@ -26,7 +27,7 @@ class _messagesState extends State<messages> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION")
+      stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroomRef).collection("CHATROOMS_COLLECTION")
           .orderBy('time')
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

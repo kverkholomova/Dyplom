@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
-import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
 import 'package:wol_pro_1/shared/constants.dart';
+import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
 
-import '../applications/screen_with_applications.dart';
 import '../../services/auth.dart';
 import '../../shared/loading.dart';
 import '../../screens/option.dart';
@@ -245,6 +243,10 @@ class _RegisterVol1State extends State<RegisterVol1> {
                 ),
 
                 IconButton(onPressed: (){
+                  print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+                  print(user_name);
+                  print(phone_number);
+                  print(pesel);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => RegisterVol()));
                 }, icon: Icon(Icons.arrow_right)),

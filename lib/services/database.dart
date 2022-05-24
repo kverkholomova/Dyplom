@@ -4,14 +4,12 @@ import 'package:wol_pro_1/models/users_all.dart';
 
 class DatabaseService{
 
-
-
     final String uid;
     DatabaseService({required this.uid});
     //collection reference
     final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
-    Future updateUserData(String name, String role,String user_name, String phone, String pesel, List<String> chosen_category, id_vol) async{
+    Future updateUserData(String name, String role, String user_name, String phone, String pesel, List<String> chosen_category, id_vol) async{
       return await userCollection.doc(uid).set({
         'name': name,
         'role': role,
@@ -29,6 +27,24 @@ class DatabaseService{
         // 'phone_number': phone_number,
       });
     }
+
+    // Future updateUserDataRef(String name, String role,String user_name, String phone, String pesel, id_ref) async{
+    //   return await userCollection.doc(uid).set({
+    //     'name': name,
+    //     'role': role,
+    //     'user_name': user_name,
+    //     'phone_number': phone,
+    //     'pesel': pesel,
+    //     'id_ref': id_ref,
+    //
+    //
+    //
+    //
+    //     // 'volunteer_name': volunteer_name,
+    //     // 'surname': surname,
+    //     // 'phone_number': phone_number,
+    //   });
+    // }
 
     //users list from snapshot
     List <AllUsers> _refugeeListFromSnapshot(QuerySnapshot snapshot){

@@ -10,12 +10,16 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/Refugee/pageWithChats.dart';
 import 'package:wol_pro_1/screens/info_volunteer_accepted_application.dart';
 import 'package:wol_pro_1/service/local_push_notifications.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 import '../../notification_api.dart';
+import '../../selectChatroom_Ref.dart';
+import '../../volunteer/applications/settings_of_application.dart';
+import '../SettingRefugee.dart';
 import 'all_applications.dart';
 
 String IDVolOfApplication = '';
@@ -31,7 +35,6 @@ class PageOfApplicationRef extends StatefulWidget {
 }
 
 class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
-
   late AndroidNotificationChannel channel;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -47,7 +50,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
 
     listenFCM();
 
-    getToken();
+    // getToken();
 
     FirebaseMessaging.instance.subscribeToTopic("Animal");
   }
@@ -58,7 +61,8 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'key = AAAADY1uR1I:APA91bEruiKUQtfsFz0yWjEovi9GAF9nkGYfmW9H2lU6jrtdCGw2C1ZdEczYXvovHMPqQBYSrDnYsbhsyk-kcCBi6Wht_YrGcSKXw4vk0UUNRlwN9UdM_4rhmf_6hd_xyAXbBsgyx12L ',
+          'Authorization':
+              'key = AAAADY1uR1I:APA91bEruiKUQtfsFz0yWjEovi9GAF9nkGYfmW9H2lU6jrtdCGw2C1ZdEczYXvovHMPqQBYSrDnYsbhsyk-kcCBi6Wht_YrGcSKXw4vk0UUNRlwN9UdM_4rhmf_6hd_xyAXbBsgyx12L ',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -81,16 +85,16 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
     }
   }
 
-  void getToken() async {
-    token = token_vol;
-    // await FirebaseMessaging.instance.getToken().then(
-    //         (token) {
-    //       setState(() {
-    //         token = token;
-    //       });
-    //     }
-    // );
-  }
+  // void getToken() async {
+  //   token = token_vol;
+  //   // await FirebaseMessaging.instance.getToken().then(
+  //   //         (token) {
+  //   //       setState(() {
+  //   //         token = token;
+  //   //       });
+  //   //     }
+  //   // );
+  // }
 
   void requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -107,7 +111,8 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
@@ -154,7 +159,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
       /// default FCM channel to enable heads up notifications.
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
 
       /// Update the iOS foreground notification presentation options to allow
@@ -193,9 +198,6 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
   //     return false;
   //   }
   // }
-
-
-
 
 // String token = '';
 //
@@ -317,6 +319,38 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                         ),
                       ),
                       Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: SizedBox(
+                          height: 50,
+                          width: 300,
+                          child: MaterialButton(
+                              child: Text(
+                                "Message",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: Color.fromRGBO(18, 56, 79, 0.8),
+                              onPressed: () {
+                                // users_chat.clear();
+                                // users_chat.add(streamSnapshot.data?.docs[index]['userID']);
+                                // users_chat.add(streamSnapshot.data?.docs[index]["volunteerID"]);
+                                // print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                                // print(users_chat);
+
+                                // IdOfChatroom = FirebaseFirestore.instance.collection('USERS_COLLECTION').doc().id;
+                                // var Look_Id = FirebaseFirestore.instance.collection('USERS_COLLECTION').where("IdVolunteer", isEqualTo: userID_ref).get();
+
+                                //if (users_chat[0] == userID_ref) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListofChatrooms()),
+                                  );
+                                //}
+                              }),
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.only(top: 250, bottom: 20),
                         child: SizedBox(
                           height: 50,
@@ -331,24 +365,23 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                                 // sendFcmMessage("Application changed", "Refugee deleted application", FirebaseFirestore.instance
                                 //     .collection('applications')
                                 //     .doc(streamSnapshot.data?.docs[index]["token_vol"]) as String);
-                               // token = FirebaseFirestore.instance
-                               //      .collection('applications')
-                               //      .doc(streamSnapshot.data?.docs[index]["token_vol"]) as String?;
-                               //
-                               //  // NotificationApi.showNotification(
-                               //  //
-                               //  //     title: "Application was deleted",
-                               //  //     body: "Refugee deleted application, so it was removed from the list of your applications"
-                               //  // );
-                               //
-                               //  _fcm.sendMessage(
-                               //    to: token,
-                               //    data: {
-                               //
-                               //    }
-                               //
-                               //  );
-
+                                // token = FirebaseFirestore.instance
+                                //      .collection('applications')
+                                //      .doc(streamSnapshot.data?.docs[index]["token_vol"]) as String?;
+                                //
+                                //  // NotificationApi.showNotification(
+                                //  //
+                                //  //     title: "Application was deleted",
+                                //  //     body: "Refugee deleted application, so it was removed from the list of your applications"
+                                //  // );
+                                //
+                                //  _fcm.sendMessage(
+                                //    to: token,
+                                //    data: {
+                                //
+                                //    }
+                                //
+                                //  );
 
                                 // FirebaseFirestore.instance.collection('applications').get().then((snapshot) => {
                                 // snapshot.docs.forEach((doc){

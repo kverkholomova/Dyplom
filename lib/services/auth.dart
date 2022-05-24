@@ -65,12 +65,12 @@ class AuthService {
   }
 
 // register with email and password refugee
-  Future registerWithEmailAndPasswordRef(String email, String password) async {
+  Future registerWithEmailAndPasswordRef(String email, String password, String user_name, String phone_number, String pesel) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('New refugee','2', user_name, phone_number, passport_number,[], user.uid);
+      await DatabaseService(uid: user!.uid).updateUserData('New refugee','2', user_name, phone_number, pesel,[], user.uid);
       return _userFromCredUser(user);
     } catch (error) {
       print(error.toString());
