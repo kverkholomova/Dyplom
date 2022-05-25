@@ -124,7 +124,8 @@ class _ApplicationState extends State<Application> {
                       'userID': ID,
                       'volunteerID': volID,
                       'date': "null",
-                      'token_vol': "null"
+                      'token_vol': "null",
+                      'chatId_vol': "null"
                       //'volunteer_pref': currentCategory,
 
                      // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,
