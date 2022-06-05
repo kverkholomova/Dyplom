@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wol_pro_1/Refugee/SettingRefugee.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'constants.dart';
@@ -125,7 +126,10 @@ class _ApplicationState extends State<Application> {
                       'volunteerID': volID,
                       'date': "null",
                       'token_vol': "null",
-                      'chatId_vol': "null"
+                      'chatId_vol': "null",
+                      'mess_button_visibility': true,
+                      'refugee_name': current_name_Ref,
+                      'volunteer_name': 'null',
                       //'volunteer_pref': currentCategory,
 
                      // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,

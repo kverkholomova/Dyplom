@@ -18,6 +18,7 @@ import 'package:wol_pro_1/shared/loading.dart';
 import 'dart:async';
 
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
+import 'package:wol_pro_1/volunteer/settings_vol_info.dart';
 
 
 String card_title='';
@@ -242,6 +243,17 @@ class CategoriesState extends State<Categories> {
               },
             ),
             actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.settings,color: Colors.white,),
+                //label: const Text('logout',style: TextStyle(color: Colors.white),),
+                onPressed: () async {
+                  //await _auth.signOut();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsVol()),
+                  );
+                },
+              ),
 
               IconButton(
                 icon: const Icon(Icons.person,color: Colors.white,),

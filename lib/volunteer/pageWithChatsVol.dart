@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/selectChatroom_Ref.dart';
-import 'package:wol_pro_1/select_chatroom.dart';
+import 'package:wol_pro_1/Refugee/selectChatroom_Ref.dart';
+import 'package:wol_pro_1/volunteer/chat/message.dart';
+import 'package:wol_pro_1/volunteer/chat/select_chatroom.dart';
 
 
 class ListofChatrooms extends StatefulWidget {

@@ -1,15 +1,20 @@
 
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wol_pro_1/Refugee/SettingRefugee.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
-
+import 'package:http/http.dart' as http;
 import '../../service/local_push_notifications.dart';
 
 String date = '';
@@ -25,40 +30,137 @@ class PageOfApplication extends StatefulWidget {
 var ID_of_vol_application;
 class _PageOfApplicationState extends State<PageOfApplication> {
 
-  // DocumentReference<Map<String, dynamic>> token_vol = FirebaseFirestore.instance
-  //     .collection('users')
-  //     .doc(userID_vol).;
-  //
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-  // storeNotificationToken() async {
-  //   String? token_vol = await FirebaseMessaging.instance.getToken();
-  //   print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-  //   print(token_vol);
-  //   FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(FirebaseAuth.instance.currentUser!.uid)
-  //       .set({'token': token_vol}, SetOptions(merge: true));
-  //   print(
-  //       "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-  //   print(token_vol);
-  //   return token_vol;
-  // }
-  //
-  // String token_vol = '';
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   FirebaseMessaging.instance.getInitialMessage();
-  //   FirebaseMessaging.onMessage.listen((event) {});
-  //   storeNotificationToken();
-  //   FirebaseMessaging.instance.subscribeToTopic('subscription');
-  //   FirebaseMessaging.onMessage.listen((event) {
-  //     LocalNotificationService.display(event);
-  //   });
-  // }
+  String? token = " ";
 
-  //var id = "";
+  @override
+  void initState() {
+    super.initState();
+
+    requestPermission();
+
+    loadFCM();
+
+    listenFCM();
+
+    // getToken();
+
+    FirebaseMessaging.instance.subscribeToTopic("Animal");
+  }
+
+  void sendPushMessage() async {
+    print("SSSSSSSSSSSSSSSSSSSsEEEEEEEEEENNNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDD");
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+          'key = AAAADY1uR1I:APA91bEruiKUQtfsFz0yWjEovi9GAF9nkGYfmW9H2lU6jrtdCGw2C1ZdEczYXvovHMPqQBYSrDnYsbhsyk-kcCBi6Wht_YrGcSKXw4vk0UUNRlwN9UdM_4rhmf_6hd_xyAXbBsgyx12L  ',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': 'Test Body',
+              'title': 'Test Title 2'
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": "$token_ref",
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  void listenFCM() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  void loadFCM() async {
+    if (!kIsWeb) {
+      channel = const AndroidNotificationChannel(
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+        importance: Importance.high,
+        enableVibration: true,
+      );
+
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+      /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      /// Update the iOS foreground notification presentation options to allow
+      /// heads up notifications.
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+  }
+
+
+  final CollectionReference applications =
+  FirebaseFirestore.instance.collection('applications');
 
   String status_updated='Application is accepted';
   String volID = FirebaseAuth.instance.currentUser!.uid;
@@ -126,11 +228,15 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                     FirebaseFirestore.instance
                                         .collection('applications')
                                         .doc(streamSnapshot.data?.docs[index].id).update({"token_vol": token_vol});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"volunteer_name": current_name_Vol});
 
                                     print(streamSnapshot.data?.docs[index].id);
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance
                                     .collection('applications').doc().id}");
 
+                                   sendPushMessage();
 
                                    ID_of_vol_application=streamSnapshot.data?.docs[index].id;
                                     Navigator.push(

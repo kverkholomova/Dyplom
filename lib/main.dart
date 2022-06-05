@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<Users?>.value(
       value: AuthService().user,
       initialData: null,
-      child: const MaterialApp(
+      child: MaterialApp(
         home: OptionChoose(),
         debugShowCheckedModeBanner: false,
       ),

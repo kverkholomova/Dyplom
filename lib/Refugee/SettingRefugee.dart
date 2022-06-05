@@ -13,7 +13,7 @@ import '../../service/local_push_notifications.dart';
 
 String current_name_Ref = '';
 // List? categories_user;
-String? token_vol;
+String token_ref ='';
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
@@ -35,7 +35,7 @@ class _SettingsHomeRefState extends State<SettingsHomeRef> {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({'token': token}, SetOptions(merge: true));
+        .set({'token_ref': token}, SetOptions(merge: true));
     print(
         "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
     print(token);
@@ -86,7 +86,7 @@ class _SettingsHomeRefState extends State<SettingsHomeRef> {
                 itemBuilder: (ctx, index) {
                   // categories_user =
                   // streamSnapshot.data?.docs[index]['category'];
-                  token_vol = streamSnapshot.data?.docs[index]['token'];
+                  token_ref = streamSnapshot.data?.docs[index]['token_ref'];
                   current_name_Ref =
                   streamSnapshot.data?.docs[index]['user_name'];
                   return Column(
@@ -136,28 +136,28 @@ class _SettingsHomeRefState extends State<SettingsHomeRef> {
                         ),
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.only(top: 40),
-                        child: Center(
-                          child: Container(
-                            width: 200,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: MaterialButton(
-                              color: const Color.fromRGBO(137, 102, 120, 0.8),
-                              child: const Text('Messages'),
-                              onPressed: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage_3()));
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatRoomId: '',)));
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 40),
+                      //   child: Center(
+                      //     child: Container(
+                      //       width: 200,
+                      //       height: 50,
+                      //       decoration: BoxDecoration(
+                      //           borderRadius: BorderRadius.circular(20)
+                      //       ),
+                      //       child: MaterialButton(
+                      //         color: const Color.fromRGBO(137, 102, 120, 0.8),
+                      //         child: const Text('Messages'),
+                      //         onPressed: () {
+                      //           // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage_3()));
+                      //           // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
+                      //           // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
+                      //           // Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatRoomId: '',)));
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   );
                 });

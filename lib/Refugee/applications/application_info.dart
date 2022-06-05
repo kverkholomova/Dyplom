@@ -17,7 +17,7 @@ import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 import '../../notification_api.dart';
-import '../../selectChatroom_Ref.dart';
+import '../selectChatroom_Ref.dart';
 import '../../volunteer/applications/settings_of_application.dart';
 import '../SettingRefugee.dart';
 import 'all_applications.dart';
@@ -56,13 +56,14 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
   }
 
   void sendPushMessage() async {
+    print("SSSSSSSSSSSSSSSSSSSsEEEEEEEEEENNNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDD");
     try {
       await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key = AAAADY1uR1I:APA91bEruiKUQtfsFz0yWjEovi9GAF9nkGYfmW9H2lU6jrtdCGw2C1ZdEczYXvovHMPqQBYSrDnYsbhsyk-kcCBi6Wht_YrGcSKXw4vk0UUNRlwN9UdM_4rhmf_6hd_xyAXbBsgyx12L ',
+              'key = AAAADY1uR1I:APA91bEruiKUQtfsFz0yWjEovi9GAF9nkGYfmW9H2lU6jrtdCGw2C1ZdEczYXvovHMPqQBYSrDnYsbhsyk-kcCBi6Wht_YrGcSKXw4vk0UUNRlwN9UdM_4rhmf_6hd_xyAXbBsgyx12L  ',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -76,7 +77,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
               'id': '1',
               'status': 'done'
             },
-            "to": "$token",
+            "to": "$token_vol",
           },
         ),
       );
@@ -84,17 +85,6 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
       print("error push notification");
     }
   }
-
-  // void getToken() async {
-  //   token = token_vol;
-  //   // await FirebaseMessaging.instance.getToken().then(
-  //   //         (token) {
-  //   //       setState(() {
-  //   //         token = token;
-  //   //       });
-  //   //     }
-  //   // );
-  // }
 
   void requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -173,59 +163,6 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
     }
   }
 
-  // User? user = FirebaseAuth.instance.currentUser;
-  // static Future<bool> sendFcmMessage(String title, String message, String tokens) async {
-  //   try {
-  //
-  //     var url = 'https://fcm.googleapis.com/fcm/send';
-  //     var header = {
-  //       "Content-Type": "application/json",
-  //       "Authorization":
-  //       "key=your_server_key",
-  //     };
-  //     var request = {
-  //       'notification': {'title': title, 'body': message},
-  //       'data': {
-  //         'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-  //         'type': 'COMMENT'
-  //       },
-  //       'to': tokens
-  //     };
-  //
-  //     return true;
-  //   } catch (e, s) {
-  //     print(e);
-  //     return false;
-  //   }
-  // }
-
-// String token = '';
-//
-//   storeNotificationToken() async {
-//     String? token = await FirebaseMessaging.instance.getToken();
-//     print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-//     print(token);
-//     FirebaseFirestore.instance
-//         .collection('users')
-//         .doc(FirebaseAuth.instance.currentUser!.uid)
-//         .set({'token': token}, SetOptions(merge: true));
-//     print(
-//         "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-//     print(token);
-//   }
-//
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     FirebaseMessaging.instance.getInitialMessage();
-//     FirebaseMessaging.onMessage.listen((event) {});
-//     storeNotificationToken();
-//     FirebaseMessaging.instance.subscribeToTopic('subscription');
-//     FirebaseMessaging.onMessage.listen((event) {
-//       LocalNotificationService.display(event);
-//     });
-//   }
 
   final CollectionReference applications =
       FirebaseFirestore.instance.collection('applications');
@@ -351,7 +288,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 250, bottom: 20),
+                        padding: const EdgeInsets.only(top: 50, bottom: 20),
                         child: SizedBox(
                           height: 50,
                           width: 300,
@@ -362,40 +299,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                               ),
                               color: Color.fromRGBO(18, 56, 79, 0.8),
                               onPressed: () {
-                                // sendFcmMessage("Application changed", "Refugee deleted application", FirebaseFirestore.instance
-                                //     .collection('applications')
-                                //     .doc(streamSnapshot.data?.docs[index]["token_vol"]) as String);
-                                // token = FirebaseFirestore.instance
-                                //      .collection('applications')
-                                //      .doc(streamSnapshot.data?.docs[index]["token_vol"]) as String?;
-                                //
-                                //  // NotificationApi.showNotification(
-                                //  //
-                                //  //     title: "Application was deleted",
-                                //  //     body: "Refugee deleted application, so it was removed from the list of your applications"
-                                //  // );
-                                //
-                                //  _fcm.sendMessage(
-                                //    to: token,
-                                //    data: {
-                                //
-                                //    }
-                                //
-                                //  );
 
-                                // FirebaseFirestore.instance.collection('applications').get().then((snapshot) => {
-                                // snapshot.docs.forEach((doc){
-                                //
-                                // const userData = ;
-                                //
-                                // if (doc.get("category") == "deleted") {
-                                // FirebaseMessaging().sendToDevice(userData.deviceToken, {
-                                // notification: {
-                                // title: 'Notification title', body: 'Notification Body'}
-                                // });
-                                // }
-                                // });
-                                // });
 
                                 sendPushMessage();
 
@@ -404,11 +308,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                                     .doc(streamSnapshot.data?.docs[index].id)
                                     .update({"status": "deleted"});
 
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => PageOfVolunteerRef()),
-                                // );
+
                               }),
                         ),
                       ),

@@ -5,8 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
-import 'package:wol_pro_1/chatPage.dart';
-import 'package:wol_pro_1/message.dart';
+import 'package:wol_pro_1/volunteer/chat/chatPage.dart';
+import 'package:wol_pro_1/volunteer/chat/message.dart';
 import 'package:wol_pro_1/models/users_all.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/services/database.dart';
@@ -113,25 +113,25 @@ class _HomeRefState extends State<HomeRef> {
                     }
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton.icon(
-                    icon: Icon(Icons.note),
-                    color: Colors.pink[400],
-                    label: Text(
-                      'Message',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                      print(userID_ref);
-
-
-
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: "Karina")));
-                    }
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: RaisedButton.icon(
+              //       icon: Icon(Icons.note),
+              //       color: Colors.pink[400],
+              //       label: Text(
+              //         'Message',
+              //         style: TextStyle(color: Colors.white),
+              //       ),
+              //       onPressed: () {
+              //         print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+              //         print(userID_ref);
+              //
+              //
+              //
+              //         // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: "Karina")));
+              //       }
+              //   ),
+              // ),
             ],
           ),
 
