@@ -45,6 +45,7 @@ class _messages_VolState extends State<messages_Vol> {
   //     .snapshots();
   @override
   Widget build(BuildContext context) {
+
     // return isLoading() ? Loading() :StreamBuilder(
     return Container(
       height: 250,
@@ -160,6 +161,7 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
   Widget build(BuildContext context) {
     return
       Scaffold(
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,7 +209,7 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
                       IconButton(
                         onPressed: () async {
                           messages_Vol(name: current_name_Vol,);
-                          await Future.delayed(const Duration(milliseconds: 500));
+                          await Future.delayed(Duration(milliseconds: 200));
                           SchedulerBinding.instance?.addPostFrameCallback((_) {
                             _scrollControllerVol_.animateTo(
                                 _scrollControllerVol_.position.maxScrollExtent,

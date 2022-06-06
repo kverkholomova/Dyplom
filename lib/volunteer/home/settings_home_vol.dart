@@ -105,7 +105,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
             return ListView.builder(
                 itemCount: streamSnapshot.data?.docs.length,
                 itemBuilder: (ctx, index) {
-                  categories_user = streamSnapshot.data?.docs[index]['category'];
+
                   token_vol = streamSnapshot.data?.docs[index]['token'];
                   current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                   return Column(
@@ -143,6 +143,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                 color: const Color.fromRGBO(137, 102, 120, 0.8),
                                 child: const Text('Applications'),
                                 onPressed: () {
+                                  categories_user = streamSnapshot.data?.docs[index]['category'];
                                   currentId_set = streamSnapshot.data?.docs[index].id;
                                   current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));

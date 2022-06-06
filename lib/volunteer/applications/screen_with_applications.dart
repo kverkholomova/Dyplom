@@ -7,14 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
-import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
-import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
+
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:wol_pro_1/screens/option.dart';
-import 'package:wol_pro_1/cash/register_form.dart';
+
 import 'package:wol_pro_1/services/auth.dart';
-import 'package:wol_pro_1/shared/application.dart';
-import 'package:wol_pro_1/shared/loading.dart';
+
 import 'dart:async';
 
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
@@ -26,7 +24,7 @@ String card_category='';
 String card_comment='';
 String userID_vol ='';
 
-
+List<String> chosen_category_settings = [];
 class Categories extends StatefulWidget {
   const Categories({Key? key}) : super(key: key);
   @override
@@ -104,117 +102,6 @@ class CategoriesState extends State<Categories> {
   }
   Widget build(BuildContext context) {
 
-    // DocumentReference docRef = FirebaseFirestore.instance.collection("users").doc(userID_vol);
-    // print(docRef);
-    print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-    print(list_cat);
-    userID_vol = FirebaseAuth.instance.currentUser!.uid;
-    List<String> categoriesList = [];
-    final CollectionReference users_cat = FirebaseFirestore.instance.collection("users");
-
-
-    // Future getData() async {
-    //   try {
-    //     //to get data from a single/particular document alone.
-    //     // var temp = await collectionRef.doc("<your document ID here>").get();
-    //
-    //     // to get data from all documents sequentially
-    //     await users_cat.get().then((querySnapshot) {
-    //       for (var result in querySnapshot.docs) {
-    //         categoriesList.add(result.data());
-    //       }
-    //     });
-    //
-    //     return categoriesList;
-    //   } catch (e) {
-    //     debugPrint("Error - $e");
-    //     return e;
-    //   }
-    // }
-
-    // Future<List<DocumentSnapshot>> getProduceID() async{
-    //   var data = await FirebaseFirestore.instance.collection('applications').doc().collection('users').get();
-    //   var productId = data.docs;
-    //   return productId;
-    // }
-
-    Future getList() async{
-      DocumentReference docRef = users_cat.doc();
-      var data;
-      docRef.get().then((datasnapshot){
-          data = datasnapshot.get("category");
-      });
-      return data;
-    }
-
-    print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-
-
-
-    // array() {
-    //   var x = users_cat.where("id_vol", isEqualTo: userID_vol).get().then((
-    //       querySnapshot) {
-    //     querySnapshot.docs.forEach((result) {
-    //       return result.get("category");
-    //       // x = result.get("category");
-    //       // print(
-    //       //     "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh");
-    //       //
-    //       // print(
-    //       //     "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    //     });
-    //   });
-    //   return x;
-    // }
-
-    var x;
-
-    users_cat.where("id_vol", isEqualTo: userID_vol).get().then((
-              querySnapshot) {
-            querySnapshot.docs.forEach((result) {
-
-              x = result.get("category");
-
-            });
-    });
-
-
-
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
-    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-
-    // print(users_cat.doc().get().then((value) => value.data()));
-
-    totalClasses() async{
-      await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID_vol)
-        .get()
-        .then((value) {
-          if(value.data()!['category'] == null){
-            return value.data();
-          }
-          else{
-            return value.data()!['category'];
-          }
-          // Access your after your get the data
-    });}
-
-    print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
-    print(totalClasses());
-    // users_cat.where("id_vol", isEqualTo: userID_vol).get()
-
-    // List categories_vol=[];
-    // List getData(){
-    //   FirebaseFirestore.instance.collection("users").get().then((value) {
-    //
-    //     // chosen_category = value.docs[1].get("category");
-    //     (chosen_category ==[] )?categories_vol=value.docs[1].get("category"):categories_vol=chosen_category;
-    //   });
-    //   return categories_vol;
-    // }
-
     print(userID_vol);
     return WillPopScope(
       onWillPop: () async {
@@ -248,6 +135,7 @@ class CategoriesState extends State<Categories> {
                 //label: const Text('logout',style: TextStyle(color: Colors.white),),
                 onPressed: () async {
                   //await _auth.signOut();
+                  chosen_category_settings = [];
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SettingsVol()),
@@ -287,15 +175,7 @@ class CategoriesState extends State<Categories> {
               stream:  applications
                   .where("status", isEqualTo: 'Sent to volunteer')
                   .where("category", whereIn: categories_user)
-              //  .where("id_vol", isEqualTo: userID_vol)
-              // .where("category", whereIn: chosen_category)
-              // .where("category", arrayContainsAny: [chosen_category])
 
-              //.where("volunteer_pref", arrayContainsAny: volunteer_preferencies)
-              //.where("category", arrayContainsAny: ['Accomodation', 'Transfer', 'Assistance with animals'])
-
-              //.where("category", whereIn: ['Accomodation','Transfer','Assistance with animals'])
-              //.where("category", arrayContainsAny: ['Accomodation','Transfer','Assistance with animals'])
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot?> streamSnapshot) {
                 return Container(

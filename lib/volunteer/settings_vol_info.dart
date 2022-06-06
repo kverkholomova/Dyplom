@@ -9,7 +9,7 @@ import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 import '../../service/local_push_notifications.dart';
 import 'applications/screen_with_applications.dart';
 
-List<String> chosen_category_settings = [];
+
 String current_name_Vol = '';
 
 String? token_vol;
@@ -55,7 +55,7 @@ class _SettingsVolState extends State<SettingsVol> {
 
   @override
   Widget build(BuildContext context) {
-    chosen_category_settings = [];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
@@ -101,70 +101,78 @@ class _SettingsVolState extends State<SettingsVol> {
                           style: TextStyle(fontSize: 14),
                           textAlign: TextAlign.center,),
                       ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: AnimatedButton(
-                              selectedBackgroundColor: Color.fromRGBO(
-                                  69, 148, 179, 0.8),
-                              height: 30,
-                              width: 100,
-                              text: 'Transfer',
+                      Center(
+                        child: Row(
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AnimatedButton(
+                                  selectedBackgroundColor: Color.fromRGBO(
+                                      69, 148, 179, 0.8),
+                                  height: 30,
+                                  width: 100,
+                                  text: 'Transfer',
 
-                              textStyle: TextStyle(color: Colors.black, fontSize: 18),
-                              isReverse: true,
-                              selectedTextColor: Colors.white,
-                              transitionType: TransitionType.LEFT_TO_RIGHT,
-                              backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
-                              borderColor: Colors.white,
-                              borderRadius: 50,
-                              borderWidth: 1,
+                                  textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                  isReverse: true,
+                                  selectedTextColor: Colors.white,
+                                  transitionType: TransitionType.LEFT_TO_RIGHT,
+                                  backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                                  borderColor: Colors.white,
+                                  borderRadius: 50,
+                                  borderWidth: 1,
 
-                              onPress: () {
-                                if (!chosen_category_settings.contains('Transfer')) {
-                                  chosen_category_settings.add('Transfer');
-                                  print(chosen_category_settings);
-                                } else if (chosen_category_settings.contains("Transfer")) {
-                                  chosen_category_settings.remove('Transfer');
-                                  print("Empty: $chosen_category_settings");
-                                }
+                                  onPress: () {
+                                    print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                                    print(chosen_category_settings);
+                                    if (!chosen_category_settings.contains('Transfer')) {
+                                      chosen_category_settings.add('Transfer');
+                                      print(chosen_category_settings);
+                                    } else if (chosen_category_settings.contains("Transfer")) {
+                                      chosen_category_settings.remove('Transfer');
+                                      print("Empty: $chosen_category_settings");
+                                    }
 
-                                //volunteer_preferencies.add('Transfer');
-                              },
+                                    //volunteer_preferencies.add('Transfer');
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: AnimatedButton(
-                              selectedBackgroundColor: Color.fromRGBO(
-                                  69, 148, 179, 0.8),
-                              height: 30,
-                              width: 150,
-                              text: 'Accomodation',
+                            Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: AnimatedButton(
+                                selectedBackgroundColor: Color.fromRGBO(
+                                    69, 148, 179, 0.8),
+                                height: 30,
+                                width: 150,
+                                text: 'Accomodation',
 
-                              textStyle: TextStyle(color: Colors.black, fontSize: 18),
-                              isReverse: true,
-                              selectedTextColor: Colors.white,
-                              transitionType: TransitionType.LEFT_TO_RIGHT,
-                              backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
-                              borderColor: Colors.white,
-                              borderRadius: 50,
-                              borderWidth: 1,
-                              onPress: () {
-                                if (!chosen_category_settings.contains('Accomodation')) {
-                                  chosen_category_settings.add('Accomodation');
+                                textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                isReverse: true,
+                                selectedTextColor: Colors.white,
+                                transitionType: TransitionType.LEFT_TO_RIGHT,
+                                backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                                borderColor: Colors.white,
+                                borderRadius: 50,
+                                borderWidth: 1,
+                                onPress: () {
+                                  print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
                                   print(chosen_category_settings);
-                                } else if (chosen_category_settings.contains('Accomodation')) {
-                                  chosen_category_settings.remove('Accomodation');
-                                  print("Empty: $chosen_category_settings");
-                                }
+                                  if (!chosen_category_settings.contains('Accomodation')) {
+                                    chosen_category_settings.add('Accomodation');
+                                    print(chosen_category_settings);
+                                  } else if (chosen_category_settings.contains('Accomodation')) {
+                                    chosen_category_settings.remove('Accomodation');
+                                    print("Empty: $chosen_category_settings");
+                                  }
 
-                                //volunteer_preferencies.add('Transfer');
-                              },
+                                  //volunteer_preferencies.add('Transfer');
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(3.0),
@@ -183,6 +191,8 @@ class _SettingsVolState extends State<SettingsVol> {
                           borderRadius: 50,
                           borderWidth: 1,
                           onPress: () {
+                            print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                            print(chosen_category_settings);
                             if (!chosen_category_settings.contains(
                                 'Assistance with animals')) {
                               chosen_category_settings.add('Assistance with animals');
@@ -215,8 +225,37 @@ class _SettingsVolState extends State<SettingsVol> {
                                 FirebaseFirestore.instance.collection("users")
                                 .doc(currentId_set).update(
                                     {"category": chosen_category_settings});
+                                // print(categories_user);
+                                // categories_user = streamSnapshot.data?.docs[index]['category'];
+                                // print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO__________OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                                // print(categories_user);
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => Categories()));
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));
+                                showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Confirm changes'),
+                                  content: const Text('Are you sure that you want to change your settings?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsVol()));
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        categories_user= [];
+                                        categories_user = chosen_category_settings;
+                                        print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO__________OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                                        print(categories_user);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Categories()));
+                                      },
+                                      child: const Text('Yes'),
+                                    ),
+                                  ],
+                                ),);
+
                               },
                             ),
                           ),

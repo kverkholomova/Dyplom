@@ -1,18 +1,15 @@
-import 'dart:async';
-
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/Refugee/pageWithChats.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wol_pro_1/volunteer/chat/message.dart';
-import 'package:wol_pro_1/volunteer/chat/pageWithChatsVol.dart';
-import 'package:wol_pro_1/volunteer/chat/select_chatroom.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
-import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
+import 'package:http/http.dart' as http;
+import '../../Refugee/SettingRefugee.dart';
 
 String roomExist ='';
 // bool isvisible = true;
@@ -32,75 +29,134 @@ var ID_of_vol_application;
 String? appId = '';
 
 class _SettingsOfApplicationState extends State<SettingsOfApplication> {
-  //var id = "";
 
-  // static Future<String?> checkExist(String docID) async {
-  //   // String? answer = 'Id';
-  //   // StreamBuilder(
-  //   //     stream: FirebaseFirestore.instance.collection('USERS_COLLECTION')
-  //   //         .where('IdVolunteer', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-  //   //         .where("IdRefugee", isEqualTo: docID)
-  //   //         .snapshots(),
-  //   //     builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-  //   //
-  //   //       return ListView.builder(
-  //   //           itemCount: streamSnapshot.data?.docs.length,
-  //   //           itemBuilder: (ctx, index) {
-  //   //       // answer = streamSnapshot.data?.docs[index].id
-  //   //             // Con;}
-  //   //
-  //   //       );});
-  //
-  //   // var answer = await FirebaseFirestore.instance.collection('USERS_COLLECTION')
-  //   //     .where('IdVolunteer', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-  //   //     .where("IdRefugee", isEqualTo: docID)
-  //   //     .snapshots();
-  //   //
-  //   // answer.
-  //
-  //   // return await answer;
-  //
-  //   // If any error
-  // }
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-  // @override
-  // Widget stream(BuildContext context, String indexDoc) {
-  //   return StreamBuilder(
-  //       stream: FirebaseFirestore.instance
-  //           .collection('USERS_COLLECTION')
-  //           .where('IdVolunteer', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-  //           // .where("IdRefugee", isEqualTo: FirebaseFirestore.instance.collection("applications").)
-  //           .snapshots(),
-  //       builder: (context, AsyncSnapshot<QuerySnapshot?> streamSnapshot) {
-  //         return Container(
-  //           width: 450,
-  //           height: 300,
-  //           child: ListView.builder(
-  //               scrollDirection: Axis.vertical,
-  //               itemCount: streamSnapshot.data?.docs.length,
-  //               itemBuilder: (ctx, index) =>
+  String? token = " ";
 
-  // Column(
-  //   children: [
-  //     // Card(
-  //     //   child: Padding(
-  //     //     padding: const EdgeInsets.all(8.0),
-  //     //     child: Column(
-  //     //       children: [
-  //     //         //streamSnapshot.data?.docs[index]['title']==null ?
-  //     //
-  //     //         Text(streamSnapshot.data?.docs[index]['IdRefugee'])
-  //     //
-  //     //       ],
-  //     //     ),
-  //     //   ),
-  //     // ),
-  //   ],
-  // )),
-  //         );
-  //       },
-  //   );
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+    requestPermission();
+
+    loadFCM();
+
+    listenFCM();
+
+    // getToken();
+
+    FirebaseMessaging.instance.subscribeToTopic("Animal");
+  }
+
+  void sendPushMessage() async {
+    print("SSSSSSSSSSSSSSSSSSSsEEEEEEEEEENNNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDD");
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+          'key = AAAADY1uR1I:APA91bEruiKUQtfsFz0yWjEovi9GAF9nkGYfmW9H2lU6jrtdCGw2C1ZdEczYXvovHMPqQBYSrDnYsbhsyk-kcCBi6Wht_YrGcSKXw4vk0UUNRlwN9UdM_4rhmf_6hd_xyAXbBsgyx12L  ',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': 'Volunteer has decided to decline your application',
+              'title': 'Acceptance decline'
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": "$token_ref",
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  void listenFCM() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  void loadFCM() async {
+    if (!kIsWeb) {
+      channel = const AndroidNotificationChannel(
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+        importance: Importance.high,
+        enableVibration: true,
+      );
+
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+      /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      /// Update the iOS foreground notification presentation options to allow
+      /// heads up notifications.
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+  }
 
   String status_declined = 'Sent to volunteer';
   @override
@@ -414,11 +470,13 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
                                   ),
                                   color: Color.fromRGBO(18, 56, 79, 0.8),
                                   onPressed: () {
+                                    sendPushMessage();
                                     FirebaseFirestore.instance
                                         .collection('applications')
                                         .doc(
                                             streamSnapshot.data?.docs[index].id)
                                         .update({"status": status_declined});
+
 
                                     print(streamSnapshot.data?.docs[index].id);
                                     print(

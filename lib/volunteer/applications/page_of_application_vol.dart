@@ -63,8 +63,8 @@ class _PageOfApplicationState extends State<PageOfApplication> {
         body: jsonEncode(
           <String, dynamic>{
             'notification': <String, dynamic>{
-              'body': 'Test Body',
-              'title': 'Test Title 2'
+              'body': 'The volunteer has chosen your application to help you.',
+              'title': 'Application is accepted'
             },
             'priority': 'high',
             'data': <String, dynamic>{

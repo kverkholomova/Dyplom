@@ -68,8 +68,8 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
         body: jsonEncode(
           <String, dynamic>{
             'notification': <String, dynamic>{
-              'body': 'Test Body',
-              'title': 'Test Title 2'
+              'body': 'The application was deleted by refugee, so your help is not necessary anymore.',
+              'title': 'Refugee deleted an application'
             },
             'priority': 'high',
             'data': <String, dynamic>{
