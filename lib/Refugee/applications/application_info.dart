@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/Refugee/messages_ref.dart';
 import 'package:wol_pro_1/Refugee/pageWithChats.dart';
 import 'package:wol_pro_1/screens/info_volunteer_accepted_application.dart';
 import 'package:wol_pro_1/service/local_push_notifications.dart';
@@ -255,36 +256,37 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: SizedBox(
-                          height: 50,
-                          width: 300,
-                          child: MaterialButton(
-                              child: Text(
-                                "Message",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: Color.fromRGBO(18, 56, 79, 0.8),
-                              onPressed: () {
-                                // users_chat.clear();
-                                // users_chat.add(streamSnapshot.data?.docs[index]['userID']);
-                                // users_chat.add(streamSnapshot.data?.docs[index]["volunteerID"]);
-                                // print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-                                // print(users_chat);
+                      Visibility(
+                        visible: streamSnapshot.data?.docs[index]["mess_button_visibility_ref"],
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: SizedBox(
+                            height: 50,
+                            width: 300,
+                            child: MaterialButton(
+                                child: Text(
+                                  "Message",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                color: Color.fromRGBO(18, 56, 79, 0.8),
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('applications')
+                                      .doc(
+                                      streamSnapshot.data?.docs[index].id)
+                                      .update({"mess_button_visibility_ref": false});
+                                 IdOfChatroomRef = streamSnapshot.data?.docs[index]['chatId_vol'];
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SelectedChatroom_Ref()),
+                                    );
 
-                                // IdOfChatroom = FirebaseFirestore.instance.collection('USERS_COLLECTION').doc().id;
-                                // var Look_Id = FirebaseFirestore.instance.collection('USERS_COLLECTION').where("IdVolunteer", isEqualTo: userID_ref).get();
 
-                                //if (users_chat[0] == userID_ref) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ListofChatrooms()),
-                                  );
-                                //}
-                              }),
+                                  //}
+                                }),
+                          ),
                         ),
                       ),
                       Padding(

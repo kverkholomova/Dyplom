@@ -19,6 +19,7 @@ import '../../service/local_push_notifications.dart';
 
 String date = '';
 
+String? Id_Of_current_application ='';
 // DateTime date = DateTime.now();
 class PageOfApplication extends StatefulWidget {
   const PageOfApplication({Key? key}) : super(key: key);
@@ -232,12 +233,16 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                         .collection('applications')
                                         .doc(streamSnapshot.data?.docs[index].id).update({"volunteer_name": current_name_Vol});
 
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"Id": streamSnapshot.data?.docs[index].id});
                                     print(streamSnapshot.data?.docs[index].id);
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance
                                     .collection('applications').doc().id}");
 
                                    sendPushMessage();
 
+                                   Id_Of_current_application = streamSnapshot.data?.docs[index].id;
                                    ID_of_vol_application=streamSnapshot.data?.docs[index].id;
                                     Navigator.push(
                                       context,

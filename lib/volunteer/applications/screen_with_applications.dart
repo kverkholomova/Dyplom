@@ -196,6 +196,7 @@ class CategoriesState extends State<Categories> {
                                 print(card_title);
                                 print(card_category);
                                 print(card_comment);
+                                Id_Of_current_application = streamSnapshot.data?.docs[index].id;
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

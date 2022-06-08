@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
@@ -10,7 +11,7 @@ import '../../screens/option.dart';
 String card_title_accepted='';
 String card_category_accepted='';
 String card_comment_accepted='';
-String current_name = '';
+// String current_name = '';
 
 
 class ApplicationsOfVolunteer extends StatefulWidget {
@@ -55,7 +56,7 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('applications')
-                .where("volunteerID", isEqualTo: userID_vol)
+                .where("volunteerID", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                 .where("status", isEqualTo: 'Application is accepted')
 
                 .snapshots(),
@@ -69,9 +70,13 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: MaterialButton(
                               onPressed: (){
-                                card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
-                                card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
-                                card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
+                                Id_Of_current_application= streamSnapshot.data?.docs[index].id;
+                                print("GGGGGGGGGGGGGGG________________GGGGGGGGGFFFFFFFFFFFFFFF");
+                                print(Id_Of_current_application);
+
+                                // card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
+                                // card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
+                                // card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
 
                                 // current_name = streamSnapshot.data?.docs[index]['ref_name'];
 

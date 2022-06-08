@@ -47,85 +47,92 @@ class _messagesState extends State<messages> {
   @override
   Widget build(BuildContext context) {
     // return isLoading() ? Loading() :StreamBuilder(
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION")
-          .orderBy('time')
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs");
-        print(FirebaseAuth.instance.currentUser?.uid);
-        if (!snapshot.hasData){
-          return Loading();
-        }
-        if (snapshot.hasError) {
-          return Text("Something is wrong");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    return Container(
+      height: 250,
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION")
+            .orderBy('time')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs");
+          print(FirebaseAuth.instance.currentUser?.uid);
+          if (!snapshot.hasData){
+            return Loading();
+          }
+          if (snapshot.hasError) {
+            return Text("Something is wrong");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-        return ListView.builder(
-          itemCount: snapshot.data!.docs.length,
-          controller: _scrollControllerVOL,
-          // physics: ScrollPhysics(),
-          shrinkWrap: true,
-          // primary: true,
-          itemBuilder: (_, index) {
-            QueryDocumentSnapshot qs = snapshot.data!.docs[index];
-            Timestamp t = qs['time'];
-            DateTime d = t.toDate();
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              controller: _scrollControllerVOL,
+              // physics: ScrollPhysics(),
+              shrinkWrap: true,
+              // primary: true,
+              itemBuilder: (_, index) {
+                QueryDocumentSnapshot qs = snapshot.data!.docs[index];
+                Timestamp t = qs['time'];
+                DateTime d = t.toDate();
 
-            print(d.toString());
-            return Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
-              child: Column(
-                // crossAxisAlignment: name == qs['name']
-                //     ? CrossAxisAlignment.end
-                //     : CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 300,
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.indigoAccent,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      title: Text(
-                        qs['name'],
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 200,
-                            child: Text(
-                              qs['message'],
-                              softWrap: true,
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
+                print(d.toString());
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Column(
+                    // crossAxisAlignment: name == qs['name']
+                    //     ? CrossAxisAlignment.end
+                    //     : CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 300,
+                        color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue:Colors.purple,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          title: Text(
+                            qs['name'],
+                            style: TextStyle(
+                              fontSize: 15,
                             ),
                           ),
-                          Text(
-                            d.hour.toString() + ":" + d.minute.toString(),
-                          )
-                        ],
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 200,
+                                child: Text(
+                                  qs['message'],
+                                  softWrap: true,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                d.hour.toString() + ":" + d.minute.toString(),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          },
-        );
-      },
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }
