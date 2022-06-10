@@ -26,54 +26,45 @@ class _ListofChatroomsVolState extends State<ListofChatroomsVol> {
             .where('IdVolunteer', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot?> streamSnapshot) {
-          return Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              height: double.infinity,
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: streamSnapshot.data?.docs.length,
-                  itemBuilder: (ctx, index) => Column(
-                    children: [
-                      SizedBox(
-                        width: 350,
+          return Container(
+
+            height: double.infinity,
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: streamSnapshot.data?.docs.length,
+                itemBuilder: (ctx, index) => Column(
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        setState(() {
+                          listOfRefugeesVol_.add(streamSnapshot.data?.docs[index]["IdRefugee"]);
+                          IdOfChatroomVol = streamSnapshot.data?.docs[index]["chatId"];
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SelectedChatroomVol()),
+                          );
+                          // print("print ${streamSnapshot.data?.docs[index][id]}");
+                        });
+                      },
+                      child: Card(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0),
-                          child: MaterialButton(
+                          padding: const EdgeInsets.only(top: 8,bottom: 8),
+                          child: Column(
+                            children: [
+                              //streamSnapshot.data?.docs[index]['title']==null ?
 
-                            onPressed: () {
-                              setState(() {
-                                listOfRefugeesVol_.add(streamSnapshot.data?.docs[index]["IdRefugee"]);
-                                IdOfChatroomVol = streamSnapshot.data?.docs[index]["chatId"];
+                              Text(streamSnapshot.data?.docs[index]['Refugee_Name'])
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SelectedChatroomVol()),
-                                );
-                                // print("print ${streamSnapshot.data?.docs[index][id]}");
-                              });
-                            },
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8,bottom: 8),
-                                child: Column(
-                                  children: [
-                                    //streamSnapshot.data?.docs[index]['title']==null ?
-
-                                    Text(streamSnapshot.data?.docs[index]['Refugee_Name'])
-
-                                  ],
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  )),
-            ),
+                    ),
+                  ],
+                )),
           );
         },
       ),
