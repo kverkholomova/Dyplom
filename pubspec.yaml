@@ -56,6 +56,7 @@ dependencies:
   url_launcher: ^6.1.2
   equatable: ^2.0.3
   cupertino_list_tile: ^0.2.1
+  flutter_scroll_to_top: ^2.1.1
 
 
 

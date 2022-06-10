@@ -221,10 +221,8 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
                         child: IconButton(
                           onPressed: () async {
                             // messages(name: current_name_Vol,);
-
                             if (message.text.isNotEmpty) {
                               writeMessages();
-
                               await Future.delayed(const Duration(milliseconds: 500));
                               SchedulerBinding.instance?.addPostFrameCallback((_) {
                                 _scrollControllerVOL.animateTo(
