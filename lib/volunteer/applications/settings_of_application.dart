@@ -14,7 +14,9 @@ import '../../Refugee/SettingRefugee.dart';
 
 String roomExist ='';
 // bool isvisible = true;
+
 String? IdOfChatroom = '';
+
 String VoluntterName = '';
 String RefugeeName = '';
 

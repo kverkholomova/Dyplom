@@ -21,29 +21,9 @@ class messages extends StatefulWidget {
 bool loading = true;
 class _messagesState extends State<messages> {
 
-  // isLoading(){
-  //   var docCheck = FirebaseFirestore.instance.collection('USERS_COLLECTION')
-  //       .doc(IdOfChatroomVol).collection("CHATROOMS_COLLECTION");
-  //   print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtoooooooooooooooooooooooooo");
-  //   print(docCheck);
-  //   if ( docCheck != null){
-  //
-  //     loading = false;
-  //   }
-  //   else{
-  //     print("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-  //     loading = true;
-  //   }
-  // }
-
   String? name;
   _messagesState({ required this.name});
-  //
-  // Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
-  //     .collection('Messages')
-  //     // .where("id_of_adressee", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-  //     .orderBy('time')
-  //     .snapshots();
+
   @override
   Widget build(BuildContext context) {
     // return isLoading() ? Loading() :StreamBuilder(
@@ -69,7 +49,7 @@ class _messagesState extends State<messages> {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: 30),
+            padding: const EdgeInsets.only(bottom: 0),
             child: ListView.builder(
               itemCount: snapshot.data!.docs.length,
               controller: _scrollControllerVOL,
@@ -164,76 +144,82 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.91,
-                child: messages(
-                  name: current_name_Vol,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.91,
+              child: messages(
+                name: current_name_Vol,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: Container(
+                color: Colors.white,
+                height: 60,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: message,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.lightBlue,
+                          hintText: 'message',
+                          enabled: true,
+                          // contentPadding: const EdgeInsets.only(
+                          //     left: 14.0, bottom: 8.0, top: 8.0),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.indigoAccent),
+                            borderRadius: new BorderRadius.circular(10),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.purple),
+                            borderRadius: new BorderRadius.circular(10),
+                          ),
+                        ),
+                        validator: (value) {
+
+                        },
+                        onSaved: (value) {
+                          message.text = value!;
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        messages(name: current_name_Vol,);
+                        loading = false;
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        SchedulerBinding.instance?.addPostFrameCallback((_) {
+                          _scrollControllerVOL.animateTo(
+                              _scrollControllerVOL.position.maxScrollExtent,
+                              // _scrollControllerVOL.position.maxScrollExtent,
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.fastOutSlowIn);
+                        });
+                        if (message.text.isNotEmpty) {
+                          writeMessages();
+                          // FirebaseFirestore.instance.collection('').doc().set({
+                          //   'message': message.text.trim(),
+                          //   'time': DateTime.now(),
+                          //   // 'name': current_name,
+                          // });
+                          message.clear();
+                        }
+                      },
+                      icon: Icon(Icons.send_sharp),
+                    ),
+                  ],
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: message,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.lightBlue,
-                        hintText: 'message',
-                        enabled: true,
-                        contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.indigoAccent),
-                          borderRadius: new BorderRadius.circular(10),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.purple),
-                          borderRadius: new BorderRadius.circular(10),
-                        ),
-                      ),
-                      validator: (value) {
-
-                      },
-                      onSaved: (value) {
-                        message.text = value!;
-                      },
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      messages(name: current_name_Vol,);
-                      loading = false;
-                      await Future.delayed(const Duration(milliseconds: 300));
-                      SchedulerBinding.instance?.addPostFrameCallback((_) {
-                        _scrollControllerVOL.animateTo(
-                            _scrollControllerVOL.position.maxScrollExtent,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn);
-                      });
-                      if (message.text.isNotEmpty) {
-                        writeMessages();
-                        // FirebaseFirestore.instance.collection('').doc().set({
-                        //   'message': message.text.trim(),
-                        //   'time': DateTime.now(),
-                        //   // 'name': current_name,
-                        // });
-                        message.clear();
-                      }
-                    },
-                    icon: Icon(Icons.send_sharp),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
