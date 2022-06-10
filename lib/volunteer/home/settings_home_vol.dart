@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/Refugee/applications/application_info.dart';
+import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/volunteer/chat/chatPage.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
@@ -91,6 +92,14 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
         backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
         elevation: 0.0,
         title: Text('Users Info',style: TextStyle(fontSize: 16),),
+        leading: IconButton(onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OptionChoose()),
+          );
+        }, icon: Icon(Icons.arrow_back),
+
+        ),
 
       ),
       body: Container(
@@ -108,81 +117,123 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
 
                   token_vol = streamSnapshot.data?.docs[index]['token'];
                   current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
-                  return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Text(
-                            streamSnapshot.data?.docs[index]['user_name'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,fontSize: 16,color: Colors.black,),textAlign: TextAlign.center,
-                          ),
+                  return Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Column(
+                        children: [
 
-                        ),
-
-                        Text(
-                          streamSnapshot.data?.docs[index]['phone_number'],
-                          style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
-
-
-
-                        // Text(
-                        //   streamSnapshot.data?.docs[index]['date'],
-                        //   style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40),
-                          child: Center(
-                            child: Container(
-                              width: 200,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20)
-                              ),
-                              child: MaterialButton(
-                                color: const Color.fromRGBO(137, 102, 120, 0.8),
-                                child: const Text('Applications'),
-                                onPressed: () {
-                                  categories_user = streamSnapshot.data?.docs[index]['category'];
-                                  currentId_set = streamSnapshot.data?.docs[index].id;
-                                  current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));
-                                },
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                streamSnapshot.data?.docs[index]['user_name'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
                               ),
                             ),
                           ),
-                        ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40),
-                          child: Center(
-                            child: Container(
-                              width: 200,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20)
-                              ),
-                              child: MaterialButton(
-                                color: const Color.fromRGBO(137, 102, 120, 0.8),
-                                child: const Text('Messages'),
-                                onPressed: () {
-                                  Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ListofChatroomsVol()),
-                                        );
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage_3()));
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatRoomId: '',)));
-                                },
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Row(
+                              children: [
+                                IconButton(onPressed: () {
+                                  print("Phone");
+                                }, icon: Icon(Icons.phone)),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    streamSnapshot.data?.docs[index]['phone_number'],
+                                    style: TextStyle(color: Colors.grey[700],fontSize: 16),textAlign: TextAlign.left,),
+                                ),
+                              ],
+                            ),
+                          ),
+
+
+
+                          // Text(
+                          //   streamSnapshot.data?.docs[index]['date'],
+                          //   style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Center(
+                              child: Container(
+                                width: 300,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: MaterialButton(
+                                  color: const Color.fromRGBO(137, 102, 120, 0.8),
+                                  child: const Text('All applications', style: (TextStyle(color: Colors.white, fontSize: 15)),),
+                                  onPressed: () {
+                                    categories_user = streamSnapshot.data?.docs[index]['category'];
+                                    currentId_set = streamSnapshot.data?.docs[index].id;
+                                    current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));
+                                  },
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Center(
+                              child: Container(
+                                width: 300,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: MaterialButton(
+                                  color: const Color.fromRGBO(137, 102, 120, 0.8),
+                                  child: const Text('My applications', style: (TextStyle(color: Colors.white, fontSize: 15)),),
+                                  onPressed: () {
+                                    categories_user = streamSnapshot.data?.docs[index]['category'];
+                                    currentId_set = streamSnapshot.data?.docs[index].id;
+                                    current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ApplicationsOfVolunteer()));
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Center(
+                              child: Container(
+                                width: 300,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: MaterialButton(
+                                  color: const Color.fromRGBO(137, 102, 120, 0.8),
+                                  child: const Text('Messages', style: (TextStyle(color: Colors.white, fontSize: 15)),),
+                                  onPressed: () {
+                                    Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ListofChatroomsVol()),
+                                          );
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage_3()));
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name,)));
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name: current_name)));
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Chat(chatRoomId: '',)));
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  );
                 });
           },
         ),

@@ -5,6 +5,7 @@ import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
 import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
+import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 
 import '../../screens/option.dart';
 
@@ -32,7 +33,7 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Categories()),
+          MaterialPageRoute(builder: (context) => SettingsHomeVol()),
         );
         return true;
       },
@@ -43,7 +44,7 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
           leading: IconButton(onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Categories()),
+              MaterialPageRoute(builder: (context) => SettingsHomeVol()),
             );
           }, icon: Icon(Icons.arrow_back),
 
@@ -66,43 +67,60 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
                   itemBuilder: (ctx, index) =>
                       Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: MaterialButton(
-                              onPressed: (){
-                                Id_Of_current_application= streamSnapshot.data?.docs[index].id;
-                                print("GGGGGGGGGGGGGGG________________GGGGGGGGGFFFFFFFFFFFFFFF");
-                                print(Id_Of_current_application);
+                          SizedBox(
+                            width: 350,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 0),
+                              child: MaterialButton(
+                                onPressed: (){
+                                  Id_Of_current_application= streamSnapshot.data?.docs[index].id;
+                                  print("GGGGGGGGGGGGGGG________________GGGGGGGGGFFFFFFFFFFFFFFF");
+                                  print(Id_Of_current_application);
 
-                                // card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
-                                // card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
-                                // card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
+                                  // card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
+                                  // card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
+                                  // card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
 
-                                // current_name = streamSnapshot.data?.docs[index]['ref_name'];
+                                  // current_name = streamSnapshot.data?.docs[index]['ref_name'];
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SettingsOfApplication()),
-                                );
-                              },
-                              child: Card(
-                                child: Center(
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SettingsOfApplication()),
+                                  );
+                                },
+                                child: Card(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Column(
+                                    child: Stack(
                                       children: [
-                                        Text(
-                                          streamSnapshot.data?.docs[index]['title'] as String,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                        Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(child: Icon(Icons.zoom_in_rounded, color: Colors.grey[700], size: 20,))),
+                                        Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                streamSnapshot.data?.docs[index]['title'] as String,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                  streamSnapshot.data?.docs[index]
+                                                  ['category'] as String,
+                                                  style: TextStyle(color: Colors.grey)),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(streamSnapshot.data?.docs[index]
+                                              ['comment'] as String),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                            streamSnapshot.data?.docs[index]
-                                            ['category'] as String,
-                                            style: TextStyle(color: Colors.grey)),
-                                        Text(streamSnapshot.data?.docs[index]
-                                        ['comment'] as String),
                                       ],
                                     ),
                                   ),

@@ -19,6 +19,24 @@ class messages extends StatefulWidget {
   _messagesState createState() => _messagesState(name: name);
 }
 bool loading = true;
+
+double myMessageLeft(String name_receiver){
+  if (name_receiver == current_name_Vol){
+    return 40;
+  }
+  else{
+    return 5;
+  }
+}
+
+double myMessageRight(String name_receiver){
+  if (name_receiver == current_name_Vol){
+    return 5;
+  }
+  else{
+    return 50;
+  }
+}
 class _messagesState extends State<messages> {
 
   String? name;
@@ -62,23 +80,23 @@ class _messagesState extends State<messages> {
                 DateTime d = t.toDate();
 
                 print(d.toString());
+                final dataKey = GlobalKey();
                 return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  padding: EdgeInsets.only(top: 8, bottom: 8, left: myMessageLeft(snapshot.data?.docs[index]["name"]), right: myMessageRight(snapshot.data?.docs[index]["name"])),
                   child: Column(
                     // crossAxisAlignment: name == qs['name']
                     //     ? CrossAxisAlignment.end
                     //     : CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 300,
-                        color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
+                  decoration: new BoxDecoration(
+                      color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
+                  borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+
                         child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue:Colors.purple,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          key: dataKey,
+
                           title: Text(
                             qs['name'],
                             style: TextStyle(
@@ -148,6 +166,7 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -158,64 +177,70 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 0),
+              padding: EdgeInsets.only( bottom: 0),
               child: Container(
                 color: Colors.white,
                 height: 60,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: message,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.lightBlue,
-                          hintText: 'message',
-                          enabled: true,
-                          // contentPadding: const EdgeInsets.only(
-                          //     left: 14.0, bottom: 8.0, top: 8.0),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.indigoAccent),
-                            borderRadius: new BorderRadius.circular(10),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.purple),
-                            borderRadius: new BorderRadius.circular(10),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: TextFormField(
+                            controller: message,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Message',
+                              enabled: true,
+                              contentPadding: const EdgeInsets.only(
+                                  left: 14.0, bottom: 8.0, top: 8.0),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.lightBlue),
+                                borderRadius: new BorderRadius.circular(10),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.lightBlue),
+                                borderRadius: new BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) {
+
+                            },
+                            onSaved: (value) {
+                              message.text = value!;
+                            },
                           ),
                         ),
-                        validator: (value) {
-
-                        },
-                        onSaved: (value) {
-                          message.text = value!;
-                        },
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        messages(name: current_name_Vol,);
-                        loading = false;
-                        await Future.delayed(const Duration(milliseconds: 500));
-                        SchedulerBinding.instance?.addPostFrameCallback((_) {
-                          _scrollControllerVOL.animateTo(
-                              _scrollControllerVOL.position.maxScrollExtent,
-                              // _scrollControllerVOL.position.maxScrollExtent,
-                              duration: Duration(milliseconds: 400),
-                              curve: Curves.fastOutSlowIn);
-                        });
-                        if (message.text.isNotEmpty) {
-                          writeMessages();
-                          // FirebaseFirestore.instance.collection('').doc().set({
-                          //   'message': message.text.trim(),
-                          //   'time': DateTime.now(),
-                          //   // 'name': current_name,
-                          // });
-                          message.clear();
-                        }
-                      },
-                      icon: Icon(Icons.send_sharp),
-                    ),
-                  ],
+                      CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.lightBlue,
+                        child: IconButton(
+                          onPressed: () async {
+                            // messages(name: current_name_Vol,);
+
+                            if (message.text.isNotEmpty) {
+                              writeMessages();
+
+                              await Future.delayed(const Duration(milliseconds: 500));
+                              SchedulerBinding.instance?.addPostFrameCallback((_) {
+                                _scrollControllerVOL.animateTo(
+                                    _scrollControllerVOL.position.maxScrollExtent,
+                                    // _scrollControllerVOL.position.maxScrollExtent,
+                                    duration: Duration(milliseconds: 400),
+                                    curve: Curves.easeIn);
+                              });
+                              message.clear();
+                            }
+                          },
+                          icon: Icon(Icons.send_sharp, color: Colors.white,),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

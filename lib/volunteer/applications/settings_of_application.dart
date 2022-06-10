@@ -168,7 +168,7 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Categories()),
+          MaterialPageRoute(builder: (context) => ApplicationsOfVolunteer()),
         );
         return true;
       },
@@ -179,6 +179,14 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
           title: Text(
             'Application Info',
             style: TextStyle(fontSize: 16),
+          ),
+          leading: IconButton(onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ApplicationsOfVolunteer()),
+            );
+          }, icon: Icon(Icons.arrow_back),
+
           ),
         ),
         body: Container(
@@ -197,37 +205,49 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
                   itemBuilder: (ctx, index) => Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 30),
-                            child: Text(
-                              // streamSnapshot.data?.docs[index]['title'],
-                              "Title",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black,
+                            padding: const EdgeInsets.only(top: 20, left: 10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                streamSnapshot.data?.docs[index]['title'],
+                                // "Title",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
-                          Text(
-                            streamSnapshot.data?.docs[index]['category'],
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                            textAlign: TextAlign.center,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                streamSnapshot.data?.docs[index]['category'],
+                                style: TextStyle(color: Colors.grey, fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 50),
-                            child: Text(
-                              streamSnapshot.data?.docs[index]['comment'],
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 14),
-                              textAlign: TextAlign.center,
+                            padding: const EdgeInsets.only(top: 15, left: 10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                streamSnapshot.data?.docs[index]['comment'],
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 14),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                           Visibility(
                             visible: streamSnapshot.data?.docs[index]["mess_button_visibility_vol"],
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(top: 250, bottom: 20),
+                                  const EdgeInsets.only(bottom: 20),
                               child: SizedBox(
                                 height: 50,
                                 width: 300,
