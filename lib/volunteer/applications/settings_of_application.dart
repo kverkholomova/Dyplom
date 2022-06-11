@@ -283,18 +283,20 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
                                                .data?.docs[index]['refugee_name'],
                                            'Volunteer_Name': streamSnapshot
                                                .data?.docs[index]['volunteer_name'],
+                                           'Id_Of_Chat': "null"
                                          });
 
-
-
-
+                                         // FirebaseFirestore.instance
+                                         //     .collection('users')
+                                         //     .doc(
+                                         //     streamSnapshot.data?.docs[index]["userID"])
+                                         //     .set({"chatId_exist": IdOfChatroom});
 
                                          FirebaseFirestore.instance
                                              .collection('applications')
                                              .doc(
                                              streamSnapshot.data?.docs[index].id)
                                              .update({"chatId_vol": IdOfChatroom});
-
                                          // VoluntterName = FirebaseFirestore.instance.collection("users").doc(users_chat[1]).get() as String;
                                          // RefugeeName = FirebaseFirestore.instance.collection("users").where("id_vol", isEqualTo: users_chat[0]).get() as String;
                                          Navigator.push(

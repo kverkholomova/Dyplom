@@ -10,6 +10,7 @@ import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 
 import '../home/settings_home_vol.dart';
 
+String? last_message= '';
 final ScrollController _scrollControllerVOL = ScrollController();
 class messages extends StatefulWidget {
   //
@@ -152,8 +153,11 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
           'message': message.text.trim(),
           'time': DateTime.now(),
           'name': current_name_Vol,
+          'id_message': "null"
+
         }
     );
+
   }
 
   final TextEditingController message = new TextEditingController();
@@ -230,7 +234,13 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
                                     // _scrollControllerVOL.position.maxScrollExtent,
                                     duration: Duration(milliseconds: 400),
                                     curve: Curves.easeIn);
+
+
                               });
+                              // FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION").doc().update(
+                              //     {"id_message": FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION").doc().id});
+                              // print("UUUUUUUUUUUUU______________HHHHHHHHHHHHHHHHHHHH");
+                              // print(last_message);
                               message.clear();
                             }
                           },
