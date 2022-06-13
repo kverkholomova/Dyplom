@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:wol_pro_1/shared/constants.dart';
+import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 
 import '../applications/screen_with_applications.dart';
 import '../../services/auth.dart';
 import '../../shared/loading.dart';
 import '../../screens/option.dart';
+import '../new_screen_with_applications.dart';
 
 
 //
@@ -23,7 +25,7 @@ class RegisterVol extends StatefulWidget {
 
 class _RegisterVolState extends State<RegisterVol> {
 
-  final AuthService _auth = AuthService();
+  final AuthService _auth_vol = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
@@ -103,7 +105,7 @@ class _RegisterVolState extends State<RegisterVol> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 10),
                   child: SizedBox(
                     height: 55,
                     child: TextFormField(
@@ -243,7 +245,7 @@ class _RegisterVolState extends State<RegisterVol> {
 
 
                 Padding(
-                  padding: const EdgeInsets.only(top: 200),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Container(
                     height: 55,
                     width: 275,
@@ -251,18 +253,17 @@ class _RegisterVolState extends State<RegisterVol> {
                         borderRadius: BorderRadius.circular(20)
                     ),
                     child: MaterialButton(
-                        color: Color.fromRGBO(94, 167, 187, 0.8),
+                        color: Color.fromRGBO(49, 72, 103, 0.8),
                         child: Text(
                           'Register',
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Categories()));
+
 
                           if(_formKey.currentState!.validate()){
                             setState(() => loading = true);
-                            dynamic result = await _auth.registerWithEmailAndPasswordVol(email, password);
+                            dynamic result = await _auth_vol.registerWithEmailAndPasswordVol(email, password);
                             if(result == null) {
                               setState(() {
                                 loading = false;
@@ -270,6 +271,8 @@ class _RegisterVolState extends State<RegisterVol> {
                               });
                             }
                           }
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SettingsHomeVol()));
                         }
                     ),
                   ),

@@ -28,7 +28,12 @@ class _ApplicationState extends State<Application> {
     'Choose category',
     'Accomodation',
     'Transfer',
-    'Assistance with animals'
+    'Assistance with animals',
+    "Clothes",
+    "Assistance with children",
+    "Free lawyer",
+    "Medical assistance",
+    "Other"
   ];
   String title = '';
   String currentCategory = '';
@@ -42,7 +47,7 @@ class _ApplicationState extends State<Application> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
-        backgroundColor: Colors.brown[400],
+        backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
         elevation: 0.0,
         actions: <Widget>[
           TextButton.icon(
@@ -61,7 +66,7 @@ class _ApplicationState extends State<Application> {
         ],
       ),
       body: Container(
-          color: Colors.blue[100],
+          color: Color.fromRGBO(234, 191, 213, 0.8),
           child: Column(
             children: [
               SizedBox(height: 20),
@@ -106,41 +111,83 @@ class _ApplicationState extends State<Application> {
                   },
                 ),
               ),
-              RaisedButton.icon(
-                  icon: Icon(Icons.add),
-                  color: Colors.pink[400],
-                  label: Text(
-                    'Add new application',
-                    style: TextStyle(color: Colors.white),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Container(
+                    width: 300,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: MaterialButton(
+                      color: const Color.fromRGBO(137, 102, 120, 0.8),
+                      child: const Text('Add new application', style: (TextStyle(color: Colors.white, fontSize: 15)),),
+                      onPressed: () async{
+                        ID = FirebaseAuth.instance.currentUser?.uid;
+                        await FirebaseFirestore.instance
+                            .collection('applications')
+                            .add({
+                          'title': (title == Null)?("Title"):(title),
+                          'category': (currentCategory=='')?("Category"):(currentCategory),
+                          'comment': (comment==Null)?("Comment"):(comment),
+                          'status': status,
+                          'userID': ID,
+                          'volunteerID': volID,
+                          'date': "null",
+                          'token_vol': "null",
+                          'token_ref': token_ref,
+                          'chatId_vol': "null",
+                          'mess_button_visibility_vol': true,
+                          'mess_button_visibility_ref': false,
+                          'refugee_name': current_name_Ref,
+                          'volunteer_name': 'null',
+                          'Id': 'null',
+                          //'volunteer_pref': currentCategory,
+
+                          // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,
+                        });
+                        currentCategory='';
+                      },
+                    ),
                   ),
-                  onPressed: () async {
-                    ID = FirebaseAuth.instance.currentUser?.uid;
-                    await FirebaseFirestore.instance
-                        .collection('applications')
-                        .add({
-                      'title': (title == Null)?("Title"):(title),
-                      'category': (currentCategory==Null)?("Category"):(currentCategory),
-                      'comment': (comment==Null)?("Comment"):(comment),
-                      'status': status,
-                      'userID': ID,
-                      'volunteerID': volID,
-                      'date': "null",
-                      'token_vol': "null",
-                      'token_ref': token_ref,
-                      'chatId_vol': "null",
-                      'mess_button_visibility_vol': true,
-                      'mess_button_visibility_ref': false,
-                      'refugee_name': current_name_Ref,
-                      'volunteer_name': 'null',
-                      'Id': 'null',
-                      //'volunteer_pref': currentCategory,
-
-                     // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,
-                    });
-
-
-                    //FirebaseAuth.instance.currentUser?.uid;
-                  }),
+                ),
+              ),
+              // RaisedButton.icon(
+              //     icon: Icon(Icons.add),
+              //     color: Colors.pink[400],
+              //     label: Text(
+              //       'Add new application',
+              //       style: TextStyle(color: Colors.white),
+              //     ),
+              //     onPressed: () async {
+              //       ID = FirebaseAuth.instance.currentUser?.uid;
+              //       await FirebaseFirestore.instance
+              //           .collection('applications')
+              //           .add({
+              //         'title': (title == Null)?("Title"):(title),
+              //         'category': (currentCategory=='')?("Category"):(currentCategory),
+              //         'comment': (comment==Null)?("Comment"):(comment),
+              //         'status': status,
+              //         'userID': ID,
+              //         'volunteerID': volID,
+              //         'date': "null",
+              //         'token_vol': "null",
+              //         'token_ref': token_ref,
+              //         'chatId_vol': "null",
+              //         'mess_button_visibility_vol': true,
+              //         'mess_button_visibility_ref': false,
+              //         'refugee_name': current_name_Ref,
+              //         'volunteer_name': 'null',
+              //         'Id': 'null',
+              //         //'volunteer_pref': currentCategory,
+              //
+              //        // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,
+              //       });
+              //       currentCategory='';
+              //       //FirebaseAuth.instance.currentUser?.uid;
+              //     }),
             ],
           )),
     );

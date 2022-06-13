@@ -5,16 +5,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
-import 'package:wol_pro_1/volunteer/chat/chatPage.dart';
-import 'package:wol_pro_1/volunteer/chat/message.dart';
+
 import 'package:wol_pro_1/models/users_all.dart';
+import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:wol_pro_1/shared/application.dart';
-import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
-import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
-
 
 class HomeRef extends StatefulWidget {
   const HomeRef({Key? key}) : super(key: key);
@@ -31,7 +28,7 @@ class _HomeRefState extends State<HomeRef> {
   @override
   Widget build(BuildContext context) {
 
-    userID_ref = FirebaseAuth.instance.currentUser!.uid;
+    // userID_ref = FirebaseAuth.instance.currentUser?.uid;
   /**  void showSettingsPanel(){
       showModalBottomSheet(
           context: context,
@@ -48,26 +45,30 @@ class _HomeRefState extends State<HomeRef> {
       value: DatabaseService(uid: '').users,
       initialData: [],
       child: Scaffold(
-        backgroundColor: Colors.brown[50],
+        // backgroundColor: Colors.brown[50],
         appBar: AppBar(
           title: const Text('Home'),
-          backgroundColor: Colors.brown[400],
+          backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
           elevation: 0.0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back,color: Colors.white,),
 
-            onPressed: () async {
-              await _auth.signOut();
+            onPressed: ()  {
+              // await _auth.signOut();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => OptionChoose()));
             },
           ),
           actions: <Widget>[
 
-            TextButton.icon(
-              icon: const Icon(Icons.person,color: Colors.white,),
-              label: const Text('logout',style: TextStyle(color: Colors.white),),
-              onPressed: () async {
-                await _auth.signOut();
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton.icon(
+                icon: const Icon(Icons.person,color: Colors.white,),
+                label: const Text('Logout',style: TextStyle(color: Colors.white),),
+                onPressed: () async {
+                  await _auth.signOut();
+                },
+              ),
             ),
             /**TextButton.icon(
                 onPressed: (){
@@ -79,40 +80,83 @@ class _HomeRefState extends State<HomeRef> {
         ),
         body: Container(
 
+          color: Color.fromRGBO(234, 191, 213, 0.8),
           child: Column(
             children: [
 
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton.icon(
-                  icon: Icon(Icons.add),
-                    color: Colors.pink[400],
-                    label: Text(
-                      'Add new application',
-                      style: TextStyle(color: Colors.white),
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Container(
+                    width: 300,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20)
                     ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Application()));
-                    }
+                    child: MaterialButton(
+                      color: const Color.fromRGBO(137, 102, 120, 0.8),
+                      child: const Text('Add new application', style: (TextStyle(color: Colors.white, fontSize: 15)),),
+                      onPressed: () {
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Application()));
+                      },
+                    ),
+                  ),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: RaisedButton.icon(
+              //     icon: Icon(Icons.add),
+              //       color: Colors.pink[400],
+              //       label: Text(
+              //         'Add new application',
+              //         style: TextStyle(color: Colors.white),
+              //       ),
+              //       onPressed: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => Application()));
+              //       }
+              //   ),
+              // ),
 
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RaisedButton.icon(
-                    icon: Icon(Icons.note),
-                    color: Colors.pink[400],
-                    label: Text(
-                      'My applications',
-                      style: TextStyle(color: Colors.white),
+                padding: const EdgeInsets.only(top: 10),
+                child: Center(
+                  child: Container(
+                    width: 300,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20)
                     ),
-                    onPressed: () {
-                      print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                      print(userID_ref);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesRef()));
-                    }
+                    child: RaisedButton.icon(
+                      icon: Icon(Icons.note),
+                      color: const Color.fromRGBO(137, 102, 120, 0.8),
+                      label: const Text('My applications', style: (TextStyle(color: Colors.white, fontSize: 15)),),
+                      onPressed: () {
+                        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        print(userID_ref);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesRef()));
+                      },
+                    ),
+                  ),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: RaisedButton.icon(
+              //       icon: Icon(Icons.note),
+              //       color: Colors.pink[400],
+              //       label: Text(
+              //         'My applications',
+              //         style: TextStyle(color: Colors.white),
+              //       ),
+              //       onPressed: () {
+              //         print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+              //         print(userID_ref);
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesRef()));
+              //       }
+              //   ),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.all(8.0),
               //   child: RaisedButton.icon(

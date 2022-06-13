@@ -29,9 +29,9 @@ class _SignInRefState extends State<SignInRef> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.brown[100],
+      // backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
       appBar: AppBar(
-        backgroundColor: Colors.brown[400],
+        backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
         elevation: 0.0,
         title: const Text('Sign in'),
         actions: <Widget>[
@@ -43,7 +43,9 @@ class _SignInRefState extends State<SignInRef> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        color: Color.fromRGBO(234, 191, 213, 0.8),
+        padding: EdgeInsets.symmetric( horizontal: 20.0),
+        // padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -66,27 +68,32 @@ class _SignInRefState extends State<SignInRef> {
                 },
               ),
 
-              SizedBox(height: 20.0),
-              RaisedButton(
-                  color: Colors.pink[400],
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: SizedBox(
+                  height: 55,width: 275,
+                  child: RaisedButton(
+                      color: Color.fromRGBO(49, 72, 103, 0.8),
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () async {
 
-                    option_refugee=true;
-                    if(_formKey.currentState!.validate()){
-                      setState(() => loading = true);
-                      dynamic result = await _auth.signInWithEmailAndPasswordRef(email, password);
-                      if(result == null) {
-                        setState(() {
-                          loading = false;
-                          error = 'Could not sign in with those credentials';
-                        });
+                        option_refugee=true;
+                        if(_formKey.currentState!.validate()){
+                          setState(() => loading = true);
+                          dynamic result = await _auth.signInWithEmailAndPasswordRef(email, password);
+                          if(result == null) {
+                            setState(() {
+                              loading = false;
+                              error = 'Could not sign in with those credentials';
+                            });
+                          }
+                        }
                       }
-                    }
-                  }
+                  ),
+                ),
               ),
               const SizedBox(height: 12.0),
               Text(

@@ -6,12 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
+import 'package:wol_pro_1/volunteer/your_app_vol.dart';
 import '../../service/local_push_notifications.dart';
-import 'applications/screen_with_applications.dart';
+
+import 'new_screen_with_applications.dart';
 
 
 String current_name_Vol = '';
-
+List<String> chosen_category_settings = [];
 String? token_vol;
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 final FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -75,7 +77,7 @@ class _SettingsVolState extends State<SettingsVol> {
             return ListView.builder(
                 itemCount: streamSnapshot.data?.docs.length,
                 itemBuilder: (ctx, index) {
-                  categories_user = streamSnapshot.data?.docs[index]['category'];
+                  // categories_user = streamSnapshot.data?.docs[index]['category'];
                   token_vol = streamSnapshot.data?.docs[index]['token'];
                   current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                   return Column(
@@ -101,15 +103,16 @@ class _SettingsVolState extends State<SettingsVol> {
                           style: TextStyle(fontSize: 14),
                           textAlign: TextAlign.center,),
                       ),
-                      Center(
-                        child: Row(
-                          children: [
-                            Center(
-                              child: Padding(
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: AnimatedButton(
-                                  selectedBackgroundColor: Color.fromRGBO(
-                                      69, 148, 179, 0.8),
+                                  selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
                                   height: 30,
                                   width: 100,
                                   text: 'Transfer',
@@ -138,40 +141,39 @@ class _SettingsVolState extends State<SettingsVol> {
                                   },
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: AnimatedButton(
-                                selectedBackgroundColor: Color.fromRGBO(
-                                    69, 148, 179, 0.8),
-                                height: 30,
-                                width: 150,
-                                text: 'Accomodation',
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AnimatedButton(
+                                  selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
+                                  height: 30,
+                                  width: 150,
+                                  text: 'Accomodation',
 
-                                textStyle: TextStyle(color: Colors.black, fontSize: 18),
-                                isReverse: true,
-                                selectedTextColor: Colors.white,
-                                transitionType: TransitionType.LEFT_TO_RIGHT,
-                                backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
-                                borderColor: Colors.white,
-                                borderRadius: 50,
-                                borderWidth: 1,
-                                onPress: () {
-                                  print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
-                                  print(chosen_category_settings);
-                                  if (!chosen_category_settings.contains('Accomodation')) {
-                                    chosen_category_settings.add('Accomodation');
+                                  textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                  isReverse: true,
+                                  selectedTextColor: Colors.white,
+                                  transitionType: TransitionType.LEFT_TO_RIGHT,
+                                  backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                                  borderColor: Colors.white,
+                                  borderRadius: 50,
+                                  borderWidth: 1,
+                                  onPress: () {
+                                    print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
                                     print(chosen_category_settings);
-                                  } else if (chosen_category_settings.contains('Accomodation')) {
-                                    chosen_category_settings.remove('Accomodation');
-                                    print("Empty: $chosen_category_settings");
-                                  }
+                                    if (!chosen_category_settings.contains('Accomodation')) {
+                                      chosen_category_settings.add('Accomodation');
+                                      print(chosen_category_settings);
+                                    } else if (chosen_category_settings.contains('Accomodation')) {
+                                      chosen_category_settings.remove('Accomodation');
+                                      print("Empty: $chosen_category_settings");
+                                    }
 
-                                  //volunteer_preferencies.add('Transfer');
-                                },
+                                    //volunteer_preferencies.add('Transfer');
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Padding(
@@ -207,6 +209,178 @@ class _SettingsVolState extends State<SettingsVol> {
                           },
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AnimatedButton(
+                                  selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
+                                  height: 30,
+                                  width: 100,
+                                  text: 'Clothes',
+
+                                  textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                  isReverse: true,
+                                  selectedTextColor: Colors.white,
+                                  transitionType: TransitionType.LEFT_TO_RIGHT,
+                                  backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                                  borderColor: Colors.white,
+                                  borderRadius: 50,
+                                  borderWidth: 1,
+
+                                  onPress: () {
+                                    print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                                    print(chosen_category_settings);
+                                    if (!chosen_category_settings.contains('Clothes')) {
+                                      chosen_category_settings.add('Clothes');
+                                      print(chosen_category_settings);
+                                    } else if (chosen_category_settings.contains("Clothes")) {
+                                      chosen_category_settings.remove('Clothes');
+                                      print("Empty: $chosen_category_settings");
+                                    }
+
+                                    //volunteer_preferencies.add('Transfer');
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AnimatedButton(
+                                  selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
+                                  height: 30,
+                                  width: 150,
+                                  text: 'Free lawyer',
+
+                                  textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                                  isReverse: true,
+                                  selectedTextColor: Colors.white,
+                                  transitionType: TransitionType.LEFT_TO_RIGHT,
+                                  backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                                  borderColor: Colors.white,
+                                  borderRadius: 50,
+                                  borderWidth: 1,
+                                  onPress: () {
+                                    print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                                    print(chosen_category_settings);
+                                    if (!chosen_category_settings.contains('Free lawyer')) {
+                                      chosen_category_settings.add('Free lawyer');
+                                      print(chosen_category_settings);
+                                    } else if (chosen_category_settings.contains('Free lawyer')) {
+                                      chosen_category_settings.remove('Free lawyer');
+                                      print("Empty: $chosen_category_settings");
+                                    }
+
+                                    //volunteer_preferencies.add('Transfer');
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: AnimatedButton(
+                          selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
+                          height: 30,
+                          width: 240,
+                          text: 'Assistance with children',
+
+                          textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                          isReverse: true,
+                          selectedTextColor: Colors.white,
+                          transitionType: TransitionType.LEFT_TO_RIGHT,
+                          backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                          borderColor: Colors.white,
+                          borderRadius: 50,
+                          borderWidth: 1,
+                          onPress: () {
+                            print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                            print(chosen_category_settings);
+                            if (!chosen_category_settings.contains(
+                                'Assistance with children')) {
+                              chosen_category_settings.add('Assistance with children');
+                              print(chosen_category_settings);
+                            } else
+                            if (chosen_category_settings.contains('Assistance with children')) {
+                              chosen_category_settings.remove('Assistance with children');
+                              print("Empty: $chosen_category_settings");
+                            }
+
+                            //volunteer_preferencies.add('Transfer');
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: AnimatedButton(
+                          selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
+                          height: 30,
+                          width: 240,
+                          text: 'Medical assistance',
+
+                          textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                          isReverse: true,
+                          selectedTextColor: Colors.white,
+                          transitionType: TransitionType.LEFT_TO_RIGHT,
+                          backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                          borderColor: Colors.white,
+                          borderRadius: 50,
+                          borderWidth: 1,
+                          onPress: () {
+                            print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                            print(chosen_category_settings);
+                            if (!chosen_category_settings.contains(
+                                'Medical assistance')) {
+                              chosen_category_settings.add('Medical assistance');
+                              print(chosen_category_settings);
+                            } else
+                            if (chosen_category_settings.contains('Medical assistance')) {
+                              chosen_category_settings.remove('Medical assistance');
+                              print("Empty: $chosen_category_settings");
+                            }
+
+                            //volunteer_preferencies.add('Transfer');
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: AnimatedButton(
+                          selectedBackgroundColor: Color.fromRGBO(69, 148, 179, 0.8),
+                          height: 30,
+                          width: 240,
+                          text: 'Other',
+
+                          textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                          isReverse: true,
+                          selectedTextColor: Colors.white,
+                          transitionType: TransitionType.LEFT_TO_RIGHT,
+                          backgroundColor: Color.fromRGBO(166, 201, 215, 0.8),
+                          borderColor: Colors.white,
+                          borderRadius: 50,
+                          borderWidth: 1,
+                          onPress: () {
+                            print("KKKKKKKKKKKKKKKKKKKKKKK_______________KKKKKKKKKKKKKKK");
+                            print(chosen_category_settings);
+                            if (!chosen_category_settings.contains(
+                                'Other')) {
+                              chosen_category_settings.add('Other');
+                              print(chosen_category_settings);
+                            } else
+                            if (chosen_category_settings.contains('Other')) {
+                              chosen_category_settings.remove('Other');
+                              print("Empty: $chosen_category_settings");
+                            }
+
+                            //volunteer_preferencies.add('Transfer');
+                          },
+                        ),
+                      ),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 40),
@@ -223,7 +397,7 @@ class _SettingsVolState extends State<SettingsVol> {
                               onPressed: () {
 
                                 FirebaseFirestore.instance.collection("users")
-                                .doc(currentId_set).update(
+                                .doc(FirebaseAuth.instance.currentUser?.uid).update(
                                     {"category": chosen_category_settings});
                                 // print(categories_user);
                                 // categories_user = streamSnapshot.data?.docs[index]['category'];
@@ -239,17 +413,17 @@ class _SettingsVolState extends State<SettingsVol> {
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsVol()));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsHomeVol()));
                                       },
                                       child: const Text('Cancel'),
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        categories_user= [];
-                                        categories_user = chosen_category_settings;
+                                        // categories_user= [];
+                                        categories_user_Register = chosen_category_settings;
                                         print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO__________OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-                                        print(categories_user);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Categories()));
+                                        // print(categories_user);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => YourCategories()));
                                       },
                                       child: const Text('Yes'),
                                     ),

@@ -18,22 +18,26 @@ class messages_Vol extends StatefulWidget {
   _messages_VolState createState() => _messages_VolState(name: name);
 }
 bool loading = true;
-class _messages_VolState extends State<messages_Vol> {
 
-  // isLoading(){
-  //   var docCheck = FirebaseFirestore.instance.collection('USERS_COLLECTION')
-  //       .doc(IdOfChatroomVol).collection("CHATROOMS_COLLECTION");
-  //   print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtoooooooooooooooooooooooooo");
-  //   print(docCheck);
-  //   if ( docCheck != null){
-  //
-  //     loading = false;
-  //   }
-  //   else{
-  //     print("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-  //     loading = true;
-  //   }
-  // }
+double myMessageLeftVol(String name_receiver){
+  if (name_receiver == current_name_Vol){
+    return 40;
+  }
+  else{
+    return 5;
+  }
+}
+
+double myMessageRightVol(String name_receiver){
+  if (name_receiver == current_name_Vol){
+    return 5;
+  }
+  else{
+    return 40;
+  }
+}
+
+class _messages_VolState extends State<messages_Vol> {
 
   String? name;
   _messages_VolState({ required this.name});
@@ -48,7 +52,7 @@ class _messages_VolState extends State<messages_Vol> {
 
     // return isLoading() ? Loading() :StreamBuilder(
     return Container(
-      height: 300,
+      height: 250,
       child: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroomVol).collection("CHATROOMS_COLLECTION")
             .orderBy('time')
@@ -80,23 +84,29 @@ class _messages_VolState extends State<messages_Vol> {
                 Timestamp t = qs['time'];
                 DateTime d = t.toDate();
                 print(d.toString());
+                final dataKey = GlobalKey();
                 return Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  padding: EdgeInsets.only(top: 8, bottom: 8, left: myMessageLeftVol(snapshot.data?.docs[index]["name"]), right: myMessageRightVol(snapshot.data?.docs[index]["name"])),
                   child: Column(
                     // crossAxisAlignment: name == qs['name']
                     //     ? CrossAxisAlignment.end
                     //     : CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 300,
-                        color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
+                        decoration: new BoxDecoration(
+                            color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
+                            borderRadius: BorderRadius.all(Radius.circular(10))
+                        ),
+                        // width: 300,
+
                         child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue:Colors.purple,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          key: dataKey,
+                          // shape: RoundedRectangleBorder(
+                          //   side: BorderSide(
+                          //     color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue:Colors.purple,
+                          //   ),
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
                           title: Text(
                             qs['name'],
                             style: TextStyle(
@@ -152,6 +162,7 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
           'message': message.text.trim(),
           'time': DateTime.now(),
           'name': current_name_Vol,
+          'id_message': "null"
         }
     );
   }
@@ -177,61 +188,65 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(bottom: 0),
                 child: Container(
                   color: Colors.white,
                   height: 60,
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.center,
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextFormField(
-                            controller: message,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.purple[100],
-                              hintText: 'message',
-                              enabled: true,
-                              contentPadding: const EdgeInsets.only(
-                                  left: 14.0, bottom: 8.0, top: 8.0),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.purple),
-                                borderRadius: new BorderRadius.circular(10),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: TextFormField(
+                              controller: message,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: 'message',
+                                enabled: true,
+                                contentPadding: const EdgeInsets.only(
+                                    left: 14.0, bottom: 8.0, top: 8.0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: new BorderSide(color: Colors.lightBlue),
+                                  borderRadius: new BorderRadius.circular(10),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: new BorderSide(color: Colors.lightBlue),
+                                  borderRadius: new BorderRadius.circular(10),
+                                ),
                               ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: new BorderSide(color: Colors.purple),
-                                borderRadius: new BorderRadius.circular(10),
-                              ),
-                            ),
-                            validator: (value) {
+                              validator: (value) {
 
-                            },
-                            onSaved: (value) {
-                              message.text = value!;
-                            },
+                              },
+                              onSaved: (value) {
+                                message.text = value!;
+                              },
+                            ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () async {
-                            messages_Vol(name: current_name_Vol,);
-                            await Future.delayed(Duration(milliseconds: 500));
-                            SchedulerBinding.instance?.addPostFrameCallback((_) {
-                              _scrollControllerVol_.animateTo(
-                                  _scrollControllerVol_.position.maxScrollExtent,
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.fastOutSlowIn);
-                            });
-                            if (message.text.isNotEmpty) {
-                              writeMessages();
-                              // FirebaseFirestore.instance.collection('').doc().set({
-                              //   'message': message.text.trim(),
-                              //   'time': DateTime.now(),
-                              //   // 'name': current_name,
-                              // });
-                              message.clear();
-                            }
-                          },
-                          icon: Icon(Icons.send_sharp),
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.lightBlue,
+                          child: IconButton(
+                            onPressed: () async {
+                              // /messages_Vol(name: current_name_Vol,);
+
+                              if (message.text.isNotEmpty) {
+                                writeMessages();
+                                await Future.delayed(Duration(milliseconds: 500));
+                                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                                  _scrollControllerVol_.animateTo(
+                                      _scrollControllerVol_.position.maxScrollExtent,
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.fastOutSlowIn);
+                                });
+                                message.clear();
+                              }
+                            },
+                            icon: Icon(Icons.send_sharp, color: Colors.white,),
+                          ),
                         ),
                       ],
                     ),

@@ -242,15 +242,22 @@ class _RegisterVol1State extends State<RegisterVol1> {
                   ),
                 ),
 
-                IconButton(onPressed: (){
-                  print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-                  print(user_name);
-                  print(phone_number);
-                  print(pesel);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RegisterVol()));
-                }, icon: Icon(Icons.arrow_right)),
-                SizedBox(height: 12.0),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
+                    child: IconButton(onPressed: (){
+                      print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+                      print(user_name);
+                      print(phone_number);
+                      print(pesel);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => RegisterVol()));
+                    }, icon: Icon(Icons.arrow_right,color: Colors.white,size: 30,)),
+                  ),
+                ),
+
                 Text(
                   error,
                   style: TextStyle(color: Colors.red, fontSize: 14.0),

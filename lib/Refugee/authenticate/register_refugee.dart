@@ -131,7 +131,7 @@ class _RegisterRefState extends State<RegisterRef> {
                         borderRadius: BorderRadius.circular(20)
                     ),
                     child: MaterialButton(
-                        color: Color.fromRGBO(94, 167, 187, 0.8),
+                        color: Color.fromRGBO(49, 72, 103, 0.8),
                         child: Text(
                           'Register',
                           style: TextStyle(color: Colors.white),

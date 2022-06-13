@@ -70,7 +70,7 @@ class _SignInVolState extends State<SignInVol> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 10),
                   child: SizedBox(
                     height: 55,
                     child: TextFormField(
@@ -94,7 +94,7 @@ class _SignInVolState extends State<SignInVol> {
                         borderRadius: BorderRadius.circular(20)
                     ),
                     child: MaterialButton(
-                        color: Color.fromRGBO(94, 167, 187, 0.8),
+                        color: Color.fromRGBO(49, 72, 103, 0.8),
                         child: Text(
                           'Sign In',
                           style: TextStyle(color: Colors.white),

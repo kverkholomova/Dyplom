@@ -344,8 +344,36 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
                                         .collection('applications')
                                         .doc(
                                             streamSnapshot.data?.docs[index].id)
-                                        .update({"status": status_declined});
+                                        .update({"status": status_declined,
+                                      "chatId_vol": "null",
+                                      "date": "null"
+                                    });
 
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(
+                                        streamSnapshot.data?.docs[index].id)
+                                        .update({"mess_button_visibility_ref": false});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(
+                                        streamSnapshot.data?.docs[index].id)
+                                        .update({"mess_button_visibility_vol": true});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(
+                                        streamSnapshot.data?.docs[index].id)
+                                        .update({"token_vol": "null"});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(
+                                        streamSnapshot.data?.docs[index].id)
+                                        .update({"volunteerID": "null"});
+                                    FirebaseFirestore.instance
+                                        .collection('applications')
+                                        .doc(
+                                        streamSnapshot.data?.docs[index].id)
+                                        .update({"volunteer_name": "null"});
 
                                     print(streamSnapshot.data?.docs[index].id);
                                     print(

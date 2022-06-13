@@ -16,6 +16,7 @@ import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 import 'package:http/http.dart' as http;
 import '../../service/local_push_notifications.dart';
+import '../new_screen_with_applications.dart';
 
 String date = '';
 
@@ -191,23 +192,35 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                       Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 30),
-                            child: Text(
-                              streamSnapshot.data?.docs[index]['title'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,fontSize: 16,color: Colors.black,),textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Text(
-                              streamSnapshot.data?.docs[index]['category'],
-                              style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 50),
-                            child: Text(streamSnapshot.data?.docs[index]['comment'],style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,
+                            padding: const EdgeInsets.only(top: 20, left: 10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                streamSnapshot.data?.docs[index]['title'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,),textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 350,bottom: 20),
+                            padding: const EdgeInsets.only(top: 5,left: 10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                  streamSnapshot.data?.docs[index]['category'],
+                                  style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30,left: 10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(streamSnapshot.data?.docs[index]['comment'],style: TextStyle(color: Colors.grey,fontSize: 14),textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top:20,bottom: 20),
                             child: SizedBox(
                               height: 50,
                               width: 300,
@@ -216,6 +229,7 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                   color: Color.fromRGBO(18, 56, 79, 0.8),
 
                                   onPressed: () {
+                                    sendPushMessage();
                                     date = DateTime.now().toString();
                                     FirebaseFirestore.instance
                                         .collection('applications')
@@ -240,7 +254,7 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                                    print("AAAAAAAAAAA ${FirebaseFirestore.instance
                                     .collection('applications').doc().id}");
 
-                                   sendPushMessage();
+
 
                                    Id_Of_current_application = streamSnapshot.data?.docs[index].id;
                                    ID_of_vol_application=streamSnapshot.data?.docs[index].id;

@@ -132,15 +132,22 @@ class _RegisterRef1State extends State<RegisterRef1> {
 
 
 
-                IconButton(onPressed: (){
-                  print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-                  // print(user_name);
-                  // print(phone_number);
-                  // print(pesel);
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
+                    child: IconButton(onPressed: (){
+                      print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+                      // print(user_name);
+                      // print(phone_number);
+                      // print(pesel);
 
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RegisterRef()));
-                }, icon: Icon(Icons.arrow_right)),
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => RegisterRef()));
+                    }, icon: Icon(Icons.arrow_right,color: Colors.white,size: 30,)),
+                  ),
+                ),
                 SizedBox(height: 12.0),
                 Text(
                   error,

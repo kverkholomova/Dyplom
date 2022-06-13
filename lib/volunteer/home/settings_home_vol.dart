@@ -12,11 +12,14 @@ import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 import '../../service/local_push_notifications.dart';
+import '../../services/auth.dart';
 import '../chat/pageWithChatsVol.dart';
+import '../new_screen_with_applications.dart';
+import '../settings_vol_info.dart';
 
 String? currentId_set = '';
-String current_name_Vol = '';
-List? categories_user;
+String? current_name_Vol = '';
+List categories_user_Register=[];
 String? token_vol;
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 final FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -59,16 +62,16 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
   // String token = '';
   //
   storeNotificationToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
+    String? token_v = await FirebaseMessaging.instance.getToken();
     print("------???---------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-    print(token);
+    print(token_v);
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({'token': token}, SetOptions(merge: true));
+        .set({'token_vol': token_v}, SetOptions(merge: true));
     print(
         "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-    print(token);
+    print(token_v);
   }
 
   @override
@@ -83,6 +86,8 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
       LocalNotificationService.display(event);
     });
   }
+
+  final AuthService _auth = AuthService();
 
 
   @override
@@ -101,13 +106,44 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
 
         ),
 
+        actions: <Widget>[
+
+      IconButton(
+          icon: const Icon(Icons.settings,color: Colors.white,),
+          //label: const Text('logout',style: TextStyle(color: Colors.white),),
+          onPressed: () async {
+            //await _auth.signOut();
+            // chosen_category_settings = [];
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsVol()),
+            );
+          },
+        ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton.icon(
+              icon: const Icon(Icons.person,color: Colors.white,),
+              label: const Text('Logout',style: TextStyle(color: Colors.white),),
+              onPressed: () async {
+                await _auth.signOut();
+              },
+            ),
+          ),
+          /**TextButton.icon(
+              onPressed: (){
+              showSettingsPanel();
+              },
+              label: Text("Settings",style: TextStyle(color: Colors.white),),
+              icon: Icon(Icons.settings,color: Colors.white,),)**/
+        ],
       ),
       body: Container(
         color: Color.fromRGBO(234, 191, 213, 0.8),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('users')
-              .where('id_vol', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .where('id_vol', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
               .snapshots(),
 
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -115,7 +151,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                 itemCount: streamSnapshot.data?.docs.length,
                 itemBuilder: (ctx, index) {
 
-                  token_vol = streamSnapshot.data?.docs[index]['token'];
+                  token_vol = streamSnapshot.data?.docs[index]['token_vol'];
                   current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                   return Padding(
                     padding: EdgeInsets.only(top: 20),
@@ -170,7 +206,10 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                   color: const Color.fromRGBO(137, 102, 120, 0.8),
                                   child: const Text('All applications', style: (TextStyle(color: Colors.white, fontSize: 15)),),
                                   onPressed: () {
-                                    categories_user = streamSnapshot.data?.docs[index]['category'];
+
+                                    categories_user_Register = streamSnapshot.data?.docs[index]['category'];
+                                    print("OOOOOOOOOOOOOOOO___________________TTTTTTTTTTTTTTTTTTTt");
+                                    print(categories_user_Register);
                                     currentId_set = streamSnapshot.data?.docs[index].id;
                                     current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => const Categories()));
@@ -193,7 +232,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                                   color: const Color.fromRGBO(137, 102, 120, 0.8),
                                   child: const Text('My applications', style: (TextStyle(color: Colors.white, fontSize: 15)),),
                                   onPressed: () {
-                                    categories_user = streamSnapshot.data?.docs[index]['category'];
+
                                     currentId_set = streamSnapshot.data?.docs[index].id;
                                     current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => const ApplicationsOfVolunteer()));
