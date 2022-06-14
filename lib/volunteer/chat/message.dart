@@ -20,16 +20,16 @@ bool loading = true;
 
 double myMessageLeft(String name_receiver){
   if (name_receiver == current_name_Vol){
-    return 40;
+    return 50;
   }
   else{
-    return 5;
+    return 3;
   }
 }
 
 double myMessageRight(String name_receiver){
   if (name_receiver == current_name_Vol){
-    return 5;
+    return 3;
   }
   else{
     return 50;
@@ -147,7 +147,7 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
   writeMessages(){
     FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION").doc().set(
         {
-          'message': message.text.trim(),
+          'message': message_v.text.trim(),
           'time': DateTime.now(),
           'name': current_name_Vol,
           'id_message': "null"
@@ -157,7 +157,7 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
 
   }
 
-  final TextEditingController message = new TextEditingController();
+  final TextEditingController message_v = new TextEditingController();
 
 
 
@@ -190,7 +190,7 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 5),
                           child: TextFormField(
-                            controller: message,
+                            controller: message_v,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -211,7 +211,7 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
 
                             },
                             onSaved: (value) {
-                              message.text = value!;
+                              message_v.text = value!;
                             },
                           ),
                         ),
@@ -222,12 +222,12 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
                         child: IconButton(
                           onPressed: () async {
                             // messages(name: current_name_Vol,);
-                            if (message.text.isNotEmpty) {
+                            if (message_v.text.isNotEmpty) {
                               writeMessages();
                               await Future.delayed(const Duration(milliseconds: 500));
                               SchedulerBinding.instance?.addPostFrameCallback((_) {
                                 _scrollControllerVOL.animateTo(
-                                    _scrollControllerVOL.position.maxScrollExtent,
+                                    _scrollControllerVOL.positions.last.maxScrollExtent,
                                     // _scrollControllerVOL.position.maxScrollExtent,
                                     duration: Duration(milliseconds: 400),
                                     curve: Curves.easeIn);
@@ -238,7 +238,7 @@ class _SelectedChatroomState extends State<SelectedChatroom> {
                               //     {"id_message": FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroom).collection("CHATROOMS_COLLECTION").doc().id});
                               // print("UUUUUUUUUUUUU______________HHHHHHHHHHHHHHHHHHHH");
                               // print(last_message);
-                              message.clear();
+                              message_v.clear();
                             }
                           },
                           icon: Icon(Icons.send_sharp, color: Colors.white,),

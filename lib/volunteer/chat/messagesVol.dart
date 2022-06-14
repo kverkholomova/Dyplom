@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:wol_pro_1/Refugee/pageWithChats.dart';
 import 'package:wol_pro_1/volunteer/chat/pageWithChatsVol.dart';
 
 import '../home/settings_home_vol.dart';
-final ScrollController _scrollControllerVol_ = ScrollController();
+ScrollController _scrollControllerVol_ = ScrollController() ;
 
 String color = "blue";
 
@@ -39,6 +40,8 @@ double myMessageRightVol(String name_receiver){
 
 class _messages_VolState extends State<messages_Vol> {
 
+
+
   String? name;
   _messages_VolState({ required this.name});
   //
@@ -51,95 +54,105 @@ class _messages_VolState extends State<messages_Vol> {
   Widget build(BuildContext context) {
 
     // return isLoading() ? Loading() :StreamBuilder(
-    return Container(
-      height: 250,
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroomVol).collection("CHATROOMS_COLLECTION")
-            .orderBy('time')
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs");
-          print(FirebaseAuth.instance.currentUser?.uid);
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ListofChatroomsVol()),
+        );
+        return true;
+      },
+      child: Container(
+        height: 250,
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection("USERS_COLLECTION").doc(IdOfChatroomVol).collection("CHATROOMS_COLLECTION")
+              .orderBy('time')
+              .snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs");
+            print(FirebaseAuth.instance.currentUser?.uid);
 
-          if (snapshot.hasError) {
-            return Text("Something is wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+            if (snapshot.hasError) {
+              return Text("Something is wrong");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 0),
-            child: ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              // physics: NeverScrollableScrollPhysics(),
-              controller: _scrollControllerVol_,
-              // physics: ScrollPhysics(),
-              shrinkWrap: true,
-              // primary: true,
-              itemBuilder: (_, index) {
-                QueryDocumentSnapshot qs = snapshot.data!.docs[index];
-                Timestamp t = qs['time'];
-                DateTime d = t.toDate();
-                print(d.toString());
-                final dataKey = GlobalKey();
-                return Padding(
-                  padding: EdgeInsets.only(top: 8, bottom: 8, left: myMessageLeftVol(snapshot.data?.docs[index]["name"]), right: myMessageRightVol(snapshot.data?.docs[index]["name"])),
-                  child: Column(
-                    // crossAxisAlignment: name == qs['name']
-                    //     ? CrossAxisAlignment.end
-                    //     : CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: new BoxDecoration(
-                            color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                        ),
-                        // width: 300,
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: ListView.builder(
+                controller: _scrollControllerVol_,
+                itemCount: snapshot.data!.docs.length,
+                // physics: NeverScrollableScrollPhysics(),
 
-                        child: ListTile(
-                          key: dataKey,
-                          // shape: RoundedRectangleBorder(
-                          //   side: BorderSide(
-                          //     color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue:Colors.purple,
-                          //   ),
-                          //   borderRadius: BorderRadius.circular(10),
-                          // ),
-                          title: Text(
-                            qs['name'],
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
+                // physics: ScrollPhysics(),
+                shrinkWrap: true,
+                // primary: true,
+                itemBuilder: (_, index) {
+                  QueryDocumentSnapshot qs = snapshot.data!.docs[index];
+                  Timestamp t = qs['time'];
+                  DateTime d = t.toDate();
+                  print(d.toString());
+                  final dataKey = GlobalKey();
+                  return Padding(
+                    padding: EdgeInsets.only(top: 8, bottom: 8, left: myMessageLeftVol(snapshot.data?.docs[index]["name"]), right: myMessageRightVol(snapshot.data?.docs[index]["name"])),
+                    child: Column(
+                      // crossAxisAlignment: name == qs['name']
+                      //     ? CrossAxisAlignment.end
+                      //     : CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: new BoxDecoration(
+                              color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue[100]:Colors.purple[100],
+                              borderRadius: BorderRadius.all(Radius.circular(10))
                           ),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 200,
-                                child: Text(
-                                  qs['message'],
-                                  softWrap: true,
-                                  style: TextStyle(
-                                    fontSize: 15,
+                          // width: 300,
+
+                          child: ListTile(
+                            key: dataKey,
+                            // shape: RoundedRectangleBorder(
+                            //   side: BorderSide(
+                            //     color: snapshot.data?.docs[index]["name"] == current_name_Vol ? Colors.blue:Colors.purple,
+                            //   ),
+                            //   borderRadius: BorderRadius.circular(10),
+                            // ),
+                            title: Text(
+                              qs['name'],
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 200,
+                                  child: Text(
+                                    qs['message'],
+                                    softWrap: true,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                d.hour.toString() + ":" + d.minute.toString(),
-                              )
-                            ],
+                                Text(
+                                  d.hour.toString() + ":" + d.minute.toString(),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        },
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -168,7 +181,6 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
   }
 
   final TextEditingController message = new TextEditingController();
-
 
 
   @override
@@ -237,9 +249,10 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
                                 writeMessages();
                                 await Future.delayed(Duration(milliseconds: 500));
                                 SchedulerBinding.instance?.addPostFrameCallback((_) {
+                                  print("AAAAAAAAAAA__________________works");
                                   _scrollControllerVol_.animateTo(
-                                      _scrollControllerVol_.position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 300),
+                                      _scrollControllerVol_.positions.last.maxScrollExtent,
+                                      duration: Duration(milliseconds: 400),
                                       curve: Curves.fastOutSlowIn);
                                 });
                                 message.clear();

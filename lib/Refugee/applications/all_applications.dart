@@ -17,6 +17,7 @@ import 'package:wol_pro_1/shared/loading.dart';
 import 'dart:async';
 
 import '../SettingRefugee.dart';
+import '../home/home_ref.dart';
 import 'application_info.dart';
 
 String application_ID = '';
@@ -49,7 +50,7 @@ class CategoriesRefState extends State<CategoriesRef> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SettingsHomeRef()),
+          MaterialPageRoute(builder: (context) => HomeRef()),
         );
         return true;
       },

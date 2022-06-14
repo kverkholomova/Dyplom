@@ -135,6 +135,10 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                 label: const Text('Logout',style: TextStyle(color: Colors.white),),
                 onPressed: () async {
                   await _auth.signOut();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OptionChoose()),
+                  );
                 },
               ),
             ),
