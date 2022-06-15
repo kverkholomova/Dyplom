@@ -27,7 +27,21 @@ class _ListofChatroomsRefState extends State<ListofChatroomsRef> {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Chats'),
+          backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
+          elevation: 0.0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back,color: Colors.white,),
+            onPressed: () async {
+              // await _auth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsHomeRef()),
+              );
+            },
+          ),
+        ),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('USERS_COLLECTION')

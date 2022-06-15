@@ -42,7 +42,7 @@ class _ListofChatroomsVolState extends State<ListofChatroomsVol> {
               // await _auth.signOut();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsHomeRef()),
+                MaterialPageRoute(builder: (context) => SettingsHomeVol()),
               );
             },
           ),

@@ -250,10 +250,10 @@ class _SelectedChatroomVolState extends State<SelectedChatroomVol> {
                                 await Future.delayed(Duration(milliseconds: 500));
                                 SchedulerBinding.instance?.addPostFrameCallback((_) {
                                   print("AAAAAAAAAAA__________________works");
-                                  _scrollControllerVol_.animateTo(
-                                      _scrollControllerVol_.positions.last.maxScrollExtent,
-                                      duration: Duration(milliseconds: 400),
-                                      curve: Curves.fastOutSlowIn);
+                                  _scrollControllerVol_.jumpTo(
+                                      _scrollControllerVol_.positions.last.maxScrollExtent);
+                                      // duration: Duration(milliseconds: 400),
+                                      // curve: Curves.fastOutSlowIn);
                                 });
                                 message.clear();
                               }
