@@ -49,7 +49,7 @@ class _PageOfApplicationState extends State<PageOfApplication> {
 
     // getToken();
 
-    FirebaseMessaging.instance.subscribeToTopic("Animal");
+    // FirebaseMessaging.instance.subscribeToTopic("Animal");
   }
 
   void sendPushMessage() async {
@@ -181,14 +181,15 @@ class _PageOfApplicationState extends State<PageOfApplication> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('applications')
-                .where('title', isEqualTo: card_title)
-                .where('category', isEqualTo: card_category)
-                .where('comment', isEqualTo: card_comment)
+                .where('title', isEqualTo: card_title_vol)
+                .where('category', isEqualTo: card_category_vol)
+                .where('comment', isEqualTo: card_comment_vol)
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               return ListView.builder(
                   itemCount: streamSnapshot.data?.docs.length,
                   itemBuilder: (ctx, index) =>
+
                       Column(
                         children: [
                           Padding(
@@ -249,10 +250,13 @@ class _PageOfApplicationState extends State<PageOfApplication> {
 
                                     FirebaseFirestore.instance
                                         .collection('applications')
-                                        .doc(streamSnapshot.data?.docs[index].id).update({"Id": streamSnapshot.data?.docs[index].id});
-                                    print(streamSnapshot.data?.docs[index].id);
-                                   print("AAAAAAAAAAA ${FirebaseFirestore.instance
-                                    .collection('applications').doc().id}");
+                                        .doc(streamSnapshot.data?.docs[index].id).update({"application_accepted": true});
+                                   //  FirebaseFirestore.instance
+                                   //      .collection('applications')
+                                   //      .doc(streamSnapshot.data?.docs[index].id).update({"Id": streamSnapshot.data?.docs[index].id});
+                                   //  print(streamSnapshot.data?.docs[index].id);
+                                   // print("AAAAAAAAAAA ${FirebaseFirestore.instance
+                                   //  .collection('applications').doc().id}");
 
 
 

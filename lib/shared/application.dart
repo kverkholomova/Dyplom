@@ -154,6 +154,8 @@ class _ApplicationState extends State<Application> {
                             'refugee_name': current_name_Ref,
                             'volunteer_name': 'null',
                             'Id': 'null',
+                            'voluneer_rating': 5,
+                            "application_accepted": false,
                             //'volunteer_pref': currentCategory,
 
                             // 'userId': FirebaseFirestore.instance.collection('applications').doc().id,

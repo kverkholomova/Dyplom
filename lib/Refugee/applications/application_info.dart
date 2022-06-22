@@ -12,15 +12,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/messages_ref.dart';
 import 'package:wol_pro_1/Refugee/pageWithChats.dart';
+import 'package:wol_pro_1/Refugee/rating.dart';
 import 'package:wol_pro_1/screens/info_volunteer_accepted_application.dart';
-import 'package:wol_pro_1/service/local_push_notifications.dart';
-import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
-import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
-import '../../notification_api.dart';
-import '../selectChatroom_Ref.dart';
-import '../../volunteer/applications/settings_of_application.dart';
-import '../SettingRefugee.dart';
 import 'all_applications.dart';
 
 String IDVolOfApplication = '';
@@ -53,7 +47,7 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
 
     // getToken();
 
-    FirebaseMessaging.instance.subscribeToTopic("Animal");
+    // FirebaseMessaging.instance.subscribeToTopic("Animal");
   }
 
   void sendPushMessage() async {
@@ -185,10 +179,20 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
             'Application Info',
             style: TextStyle(fontSize: 16),
           ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back,color: Colors.white,),
+            onPressed: () async {
+              // await _auth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CategoriesRef()),
+              );
+            },
+          ),
         ),
         body: Container(
           color: Color.fromRGBO(234, 191, 213, 0.8),
-          child: StreamBuilder(
+          child: StreamBuilder (
             stream: FirebaseFirestore.instance
                 .collection('applications')
                 .where('title', isEqualTo: card_title_ref)
@@ -199,20 +203,11 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
               return ListView.builder(
                   itemCount: streamSnapshot.data?.docs.length,
                   itemBuilder: (ctx, index) {
-                    // String? token;
-                    // try {
-                    //   token = streamSnapshot.data!.docs[index].get('token');
-                    //   print(
-                    //       "---------------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-                    //   print(token);
-                    // } catch (e) {
-                    //   print(
-                    //       "--------!!$index-------RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-                    //   print(e);
-                    // }
 
                     User? user = FirebaseAuth.instance.currentUser;
                     final docId = streamSnapshot.data!.docs[index]["volunteerID"];
+                    print("IIIIIIIIIIIIIIII_______________HHHHHHHHHHHHHHH");
+                    print(streamSnapshot.data?.docs[index]['title']);
                     return Column(
                       children: [
                         Padding(
@@ -366,7 +361,38 @@ class _PageOfApplicationRefState extends State<PageOfApplicationRef> {
                                   );
                                 }),
                           ),
-                        )
+                        ),
+                        // Visibility(
+                        //   visible: streamSnapshot.data?.docs[index]["application_accepted"],
+                        //   child:
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: SizedBox(
+                              height: 50,
+                              width: 300,
+                              child: MaterialButton(
+                                  child: Text(
+                                    "Mark application as done",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: Color.fromRGBO(18, 56, 79, 0.8),
+                                  onPressed: () {
+                                    IDVolOfApplication = streamSnapshot
+                                        .data?.docs[index]['volunteerID'] as String;
+                                    print(IDVolOfApplication);
+                                    print(
+                                        "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Rating_Page()),
+                                    );
+                                  }),
+                            ),
+                          ),
+                        // )
                       ],
                     );
                   });

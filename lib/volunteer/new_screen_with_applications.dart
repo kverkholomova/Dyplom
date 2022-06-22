@@ -2,17 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
-import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
-import 'package:wol_pro_1/screens/option.dart';
+
 import 'package:wol_pro_1/services/auth.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
-import 'package:wol_pro_1/volunteer/settings_vol_info.dart';
+
 import 'package:wol_pro_1/volunteer/your_app_vol.dart';
 
 String category_chosen_button ='';
-String card_title='';
-String card_category='';
-String card_comment='';
+String? card_title_vol='';
+String? card_category_vol='';
+String? card_comment_vol='';
 String userID_vol ='';
 
 List<String> categories_list_all = [
@@ -41,28 +40,6 @@ class CategoriesState extends State<Categories> {
   final AuthService _auth = AuthService();
   final CollectionReference applications = FirebaseFirestore.instance.collection("applications");
 
-
-
-
-
-  // List list_cat = [];
-
-  // List getList() {
-  //   DocumentReference docRef = FirebaseFirestore.instance.collection("users").doc(userID_vol);
-  //   docRef.set("category").toString();
-  //   List data = [];
-  //   data.add(docRef.set("category").toString());
-  //   // docRef.get().then((datasnapshot){
-  //   //     data.add(datasnapshot.get("category"));
-  //   // });
-  //   return data as List;
-  // }
-
-  // @override
-  // void main() async{
-  //
-  //   list_cat = await getList() as List;
-  // }
 
   @override
 
@@ -336,6 +313,7 @@ class CategoriesState extends State<Categories> {
   }
 }
 
+String? id_card = '';
 class ChosenCategory extends StatefulWidget{
   const ChosenCategory({Key? key}) : super(key: key);
   @override
@@ -429,9 +407,15 @@ class ChosenCategoryState extends State<ChosenCategory> {
                         onPressed: () {
 
                           setState(() {
-                            card_title=streamSnapshot.data?.docs[index]['title'] as String;
-                            card_category=streamSnapshot.data?.docs[index]['category'] as String;
-                            card_comment=streamSnapshot.data?.docs[index]['comment'] as String;
+                            // FirebaseFirestore.instance
+                            //     .collection('applications')
+                            //     .doc(streamSnapshot.data?.docs[index].id)
+                            //     .update({"Id": streamSnapshot.data?.docs[index].id});
+                            //
+                            // id_card = streamSnapshot.data?.docs[index].id;
+                            card_title_vol=streamSnapshot.data?.docs[index]['title'];
+                            card_category_vol=streamSnapshot.data?.docs[index]['category'];
+                            card_comment_vol=streamSnapshot.data?.docs[index]['comment'];
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -453,11 +437,9 @@ class ChosenCategoryState extends State<ChosenCategory> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                      streamSnapshot.data?.docs[index]
-                                      ['category'] as String,
+                                      streamSnapshot.data?.docs[index]['category'] as String,
                                       style: TextStyle(color: Colors.grey)),
-                                  Text(streamSnapshot.data?.docs[index]
-                                  ['comment'] as String),
+                                  Text(streamSnapshot.data?.docs[index]['comment'] as String),
                                 ],
                               ),
                             ),
