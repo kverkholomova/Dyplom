@@ -1,8 +1,4 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 
@@ -46,7 +42,7 @@ class _HomeRefState extends State<HomeRef> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SettingsHomeRef()),
+          MaterialPageRoute(builder: (context) => const SettingsHomeRef()),
         );
         return true;
       },
@@ -58,14 +54,14 @@ class _HomeRefState extends State<HomeRef> {
           // backgroundColor: Colors.brown[50],
           appBar: AppBar(
             title: const Text('Home'),
-            backgroundColor: Color.fromRGBO(49, 72, 103, 0.8),
+            backgroundColor: const Color.fromRGBO(49, 72, 103, 0.8),
             elevation: 0.0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back,color: Colors.white,),
 
               onPressed: ()  {
                 // await _auth.signOut();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => OptionChoose()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const OptionChoose()));
               },
             ),
             actions: <Widget>[
@@ -90,7 +86,7 @@ class _HomeRefState extends State<HomeRef> {
           ),
           body: Container(
 
-            color: Color.fromRGBO(234, 191, 213, 0.8),
+            color: const Color.fromRGBO(234, 191, 213, 0.8),
             child: Column(
               children: [
 
@@ -139,13 +135,13 @@ class _HomeRefState extends State<HomeRef> {
                           borderRadius: BorderRadius.circular(20)
                       ),
                       child: RaisedButton.icon(
-                        icon: Icon(Icons.note),
+                        icon: const Icon(Icons.note),
                         color: const Color.fromRGBO(137, 102, 120, 0.8),
                         label: const Text('My applications', style: (TextStyle(color: Colors.white, fontSize: 15)),),
                         onPressed: () {
                           print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                           print(userID_ref);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesRef()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CategoriesRef()));
                         },
                       ),
                     ),

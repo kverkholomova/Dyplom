@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wol_pro_1/Refugee/applications/all_applications.dart';
 import 'package:wol_pro_1/Refugee/applications/application_info.dart';
 import 'package:wol_pro_1/screens/option.dart';
 import 'package:wol_pro_1/volunteer/chat/chatPage.dart';
-import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/cash/screen_with_applications.dart';
+import 'package:wol_pro_1/volunteer/chat/message.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 
 import '../../service/local_push_notifications.dart';
@@ -34,6 +38,18 @@ class SettingsHomeVol extends StatefulWidget {
 
 class _SettingsHomeVolState extends State<SettingsHomeVol> {
 
+  // final Stream<int> _bids = (() {
+  //   late final StreamController<int> controller;
+  //   controller = StreamController<int>(
+  //     onListen: () async {
+  //       await Future<void>.delayed(const Duration(seconds: 1));
+  //       controller.add(1);
+  //       await Future<void>.delayed(const Duration(seconds: 1));
+  //       await controller.close();
+  //     },
+  //   );
+  //   return controller.stream;
+  // })();
   /// Get the token, save it to the database for current user
   // _saveDeviceToken() async {
   //   // Get the current user
@@ -91,7 +107,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return WillPopScope(
       onWillPop: () async {
         Navigator.push(
@@ -160,11 +176,29 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
 
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               return ListView.builder(
-                  itemCount: streamSnapshot.data?.docs.length,
+                  itemCount: !streamSnapshot.hasData? 1: streamSnapshot.data?.docs.length,
                   itemBuilder: (ctx, index) {
-
                     token_vol = streamSnapshot.data?.docs[index]['token_vol'];
                     current_name_Vol = streamSnapshot.data?.docs[index]['user_name'];
+                    if (streamSnapshot.hasData){
+                    switch (streamSnapshot.connectionState){
+                      case ConnectionState.waiting:
+                        return  Column(
+                          children: [
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting data...'),
+                            )
+                          ]
+
+                        );
+
+                      case ConnectionState.active:
                     return Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Column(
@@ -175,7 +209,7 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                  streamSnapshot.data?.docs[index]['user_name'],
+                                  streamSnapshot.data?.docs[index]['user_name'] ,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
                                 ),
@@ -284,6 +318,30 @@ class _SettingsHomeVolState extends State<SettingsHomeVol> {
                             ),
                           ],
                         ),
+                    );}}
+                    else{
+
+                    }
+                    return Center(
+                      child: Padding(padding: EdgeInsets.only(top: 100),
+                        child: Column(
+                          children: [
+                            SpinKitChasingDots(
+                              color: Colors.brown,
+                              size: 50.0,
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                  "Waiting...",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
+                              ),
+                            ),
+                        Padding(padding: EdgeInsets.only(top: 20),)
+                          ],
+                        ),
+                      ),
                     );
                   });
             },

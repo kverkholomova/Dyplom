@@ -3,7 +3,7 @@ import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:wol_pro_1/shared/constants.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 
-import '../applications/screen_with_applications.dart';
+import '../../cash/screen_with_applications.dart';
 import '../../services/auth.dart';
 import '../../shared/loading.dart';
 import '../../screens/option.dart';

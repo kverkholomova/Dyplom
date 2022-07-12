@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/cash/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer.dart';
 
 import 'package:wol_pro_1/screens/wrapper.dart';

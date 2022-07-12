@@ -5,7 +5,7 @@ import 'package:wol_pro_1/shared/loading.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
 
 import '../../shared/constants.dart';
-import '../applications/screen_with_applications.dart';
+import '../../cash/screen_with_applications.dart';
 
 class SignInVol extends StatefulWidget {
 

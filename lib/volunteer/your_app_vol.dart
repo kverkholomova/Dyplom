@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:wol_pro_1/screens/option.dart';
@@ -146,15 +147,35 @@ class YourCategoriesState extends State<YourCategories> {
                 builder: (context, AsyncSnapshot<QuerySnapshot?> streamSnapshot) {
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: streamSnapshot.data?.docs.length,
-                      itemBuilder: (ctx, index) => Column(
+                      itemCount: !streamSnapshot.hasData? 1:streamSnapshot.data?.docs.length,
+                      itemBuilder: (ctx, index) {
+
+                  if (streamSnapshot.hasData){
+                  switch (streamSnapshot.connectionState){
+                    case ConnectionState.waiting:
+                      return  Column(
+                          children: [
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting data...'),
+                            )
+                          ]
+
+                      );
+                    case ConnectionState.active:
+                      return Column(
                         children: [
                           MaterialButton(
                             onPressed: () {
                               setState(() {
-                                card_title=streamSnapshot.data?.docs[index]['title'] as String;
-                                card_category=streamSnapshot.data?.docs[index]['category'] as String;
-                                card_comment=streamSnapshot.data?.docs[index]['comment'] as String;
+                                card_title_vol=streamSnapshot.data?.docs[index]['title'] as String;
+                                card_category_vol=streamSnapshot.data?.docs[index]['category'] as String;
+                                card_comment_vol=streamSnapshot.data?.docs[index]['comment'] as String;
 
                                 print(card_title);
                                 print(card_category);
@@ -205,7 +226,29 @@ class YourCategoriesState extends State<YourCategories> {
                             ),
                           ),
                         ],
-                      ));
+                      );}}
+                  return Center(
+                    child: Padding(padding: EdgeInsets.only(top: 100),
+                      child: Column(
+                        children: [
+                          SpinKitChasingDots(
+                            color: Colors.brown,
+                            size: 50.0,
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                                "Waiting...",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 20),)
+                        ],
+                      ),
+                    ),
+                  );
+                      });
                 },
               ),
             ),

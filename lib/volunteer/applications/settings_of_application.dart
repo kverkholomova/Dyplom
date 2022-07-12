@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
 import 'package:wol_pro_1/volunteer/chat/message.dart';
-import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/cash/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:http/http.dart' as http;
 import '../../Refugee/SettingRefugee.dart';
@@ -194,10 +194,10 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('applications')
-            .where('Id', isEqualTo: Id_Of_current_application)
-            //     .where('title', isEqualTo: card_title_accepted)
-            //     .where('category', isEqualTo: card_category_accepted)
-            //     .where('comment', isEqualTo: card_comment_accepted)
+            // .where('Id', isEqualTo: Id_Of_current_application)
+                .where('title', isEqualTo: card_title_accepted)
+                .where('category', isEqualTo: card_category_accepted)
+                .where('comment', isEqualTo: card_comment_accepted)
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               return ListView.builder(
@@ -265,8 +265,6 @@ class _SettingsOfApplicationState extends State<SettingsOfApplication> {
 
 
                                        if (streamSnapshot.data?.docs[index]["chatId_vol"] == "null"){
-
-
                                          IdOfChatroom = FirebaseFirestore.instance.collection('USERS_COLLECTION').doc().id;
                                          print("PPPPPPPPPPPPPPPPPPPOOOOOOOOOOOOOOOOWWWWWWWWWWWWWWWWWWWWW");
                                          print(IdOfChatroom);

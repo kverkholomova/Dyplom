@@ -10,8 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wol_pro_1/Refugee/SettingRefugee.dart';
-import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/cash/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/home/applications_vol.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
 import 'package:http/http.dart' as http;
@@ -41,11 +42,11 @@ class _PageOfApplicationState extends State<PageOfApplication> {
   void initState() {
     super.initState();
 
-    requestPermission();
-
-    loadFCM();
-
-    listenFCM();
+    // requestPermission();
+    //
+    // loadFCM();
+    //
+    // listenFCM();
 
     // getToken();
 
@@ -187,16 +188,36 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               return ListView.builder(
-                  itemCount: streamSnapshot.data?.docs.length,
-                  itemBuilder: (ctx, index) =>
+                  itemCount: !streamSnapshot.hasData? 1:streamSnapshot.data?.docs.length,
+                  itemBuilder: (ctx, index) {
 
-                      Column(
+                    print("WWWWWWWHHHHHAAAAAAATTTTT");
+              if (streamSnapshot.hasData){
+              switch (streamSnapshot.connectionState){
+                case ConnectionState.waiting:
+                  return  Column(
+                      children: [
+                        SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: CircularProgressIndicator(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text('Awaiting data...'),
+                        )
+                      ]
+
+                  );
+                case ConnectionState.active:
+                  return Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 20, left: 10),
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: Text(
+                                // "Title",
                                 streamSnapshot.data?.docs[index]['title'],
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,),textAlign: TextAlign.center,
@@ -273,7 +294,29 @@ class _PageOfApplicationState extends State<PageOfApplication> {
                             ),
                           )
                         ],
-                      ));
+                      );}}
+              return Center(
+                child: Padding(padding: EdgeInsets.only(top: 100),
+                  child: Column(
+                    children: [
+                      SpinKitChasingDots(
+                        color: Colors.brown,
+                        size: 50.0,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            "Waiting...",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 20),)
+                    ],
+                  ),
+                ),
+              );
+                  });
             },
           ),
         ),

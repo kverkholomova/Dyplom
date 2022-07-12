@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wol_pro_1/volunteer/applications/page_of_application_vol.dart';
-import 'package:wol_pro_1/volunteer/applications/screen_with_applications.dart';
+import 'package:wol_pro_1/cash/screen_with_applications.dart';
 import 'package:wol_pro_1/volunteer/applications/settings_of_application.dart';
 import 'package:wol_pro_1/volunteer/authenticate/register_volunteer_1.dart';
 import 'package:wol_pro_1/volunteer/home/settings_home_vol.dart';
@@ -77,9 +77,9 @@ class _ApplicationsOfVolunteerState extends State<ApplicationsOfVolunteer> {
                                   print("GGGGGGGGGGGGGGG________________GGGGGGGGGFFFFFFFFFFFFFFF");
                                   print(Id_Of_current_application);
 
-                                  // card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
-                                  // card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
-                                  // card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
+                                  card_title_accepted=streamSnapshot.data?.docs[index]['title'] as String;
+                                  card_category_accepted=streamSnapshot.data?.docs[index]['category'] as String;
+                                  card_comment_accepted=streamSnapshot.data?.docs[index]['comment'] as String;
 
                                   // current_name = streamSnapshot.data?.docs[index]['ref_name'];
 
