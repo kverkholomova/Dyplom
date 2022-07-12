@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -105,7 +106,7 @@ class _Rating_PageState extends State<Rating_Page> {
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
               return ListView.builder(
-                  itemCount: streamSnapshot.data?.docs.length,
+                  itemCount: !streamSnapshot.hasData? 1:streamSnapshot.data?.docs.length,
                   itemBuilder: (ctx, index) {
                     // String? token;
                     // try {
@@ -121,6 +122,25 @@ class _Rating_PageState extends State<Rating_Page> {
 
                     User? user = FirebaseAuth.instance.currentUser;
                     final docId = streamSnapshot.data!.docs[index]["volunteerID"];
+                    if (streamSnapshot.hasData){
+                    switch (streamSnapshot.connectionState){
+                      case ConnectionState.waiting:
+                        return  Column(
+                          children: [
+                            SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text('Awaiting data...'),
+                            )
+                    ]
+
+                    );
+
+                    case ConnectionState.active:
                     return Column(
                       children: [
                         SingleChildScrollView(
@@ -197,6 +217,28 @@ class _Rating_PageState extends State<Rating_Page> {
 
 
                       ],
+                    );
+                  }}
+                    return Center(
+                      child: Padding(padding: EdgeInsets.only(top: 100),
+                        child: Column(
+                          children: [
+                            SpinKitChasingDots(
+                              color: Colors.brown,
+                              size: 50.0,
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                  "Waiting...",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.only(top: 20),)
+                          ],
+                        ),
+                      ),
                     );
                   });
             },

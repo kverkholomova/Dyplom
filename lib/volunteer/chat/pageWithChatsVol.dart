@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wol_pro_1/volunteer/chat/message.dart';
 
 import 'package:wol_pro_1/volunteer/chat/messagesVol.dart';
@@ -60,9 +61,28 @@ class _ListofChatroomsVolState extends State<ListofChatroomsVol> {
 
                 shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  itemCount: streamSnapshot.data?.docs.length,
-                  itemBuilder: (ctx, index) =>
-                      Column(
+                  itemCount: !streamSnapshot.hasData? 1:streamSnapshot.data?.docs.length,
+                  itemBuilder: (ctx, index) {
+                  if (streamSnapshot.hasData){
+                    switch (streamSnapshot.connectionState){
+                      case ConnectionState.waiting:
+                        return  Column(
+                          children: [
+                              SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting data...'),
+                              )
+                        ]
+
+                  );
+
+                  case ConnectionState.active:
+                  return Column(
                         mainAxisSize: MainAxisSize.max,
                     children: [
                       MaterialButton(
@@ -164,7 +184,29 @@ class _ListofChatroomsVolState extends State<ListofChatroomsVol> {
                         ),
                       ),
                     ],
-                  )),
+                  );}}
+                  return Center(
+                    child: Padding(padding: EdgeInsets.only(top: 100),
+                      child: Column(
+                        children: [
+                          SpinKitChasingDots(
+                            color: Colors.brown,
+                            size: 50.0,
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                                "Waiting...",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,fontSize: 24,color: Colors.black,)
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 20),)
+                        ],
+                      ),
+                    ),
+                  );
+                }),
             );
           },
         ),
