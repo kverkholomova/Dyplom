@@ -29,10 +29,10 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (showSignInRef) {
-      if(option_refugee){
+      if(optionRefugee){
         return SignInRef(toggleView:  toggleView);
       }
-      else if(!option_refugee){
+      else if(!optionRefugee){
         return SignInVol(toggleView:  toggleView);
       }
 
@@ -40,10 +40,10 @@ class _AuthenticateState extends State<Authenticate> {
     }
 
     else {
-      if(option_refugee){
+      if(optionRefugee){
         return RegisterRef1(toggleView:  toggleView);
       }
-      else if(!option_refugee){
+      else if(!optionRefugee){
         return RegisterVol1(toggleView:  toggleView);
       }
     return OptionChoose();

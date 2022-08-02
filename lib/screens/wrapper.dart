@@ -19,9 +19,9 @@ class Wrapper extends StatelessWidget {
     final user=Provider.of<Users?>(context);
     if (user==null){
       return Authenticate();
-    } else if(option_refugee){
+    } else if(optionRefugee){
       return SettingsHomeRef();
-    }else if(!option_refugee){
+    }else if(!optionRefugee){
       return SettingsHomeVol();
     }
     else{

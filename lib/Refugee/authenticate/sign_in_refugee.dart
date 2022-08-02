@@ -80,7 +80,7 @@ class _SignInRefState extends State<SignInRef> {
                       ),
                       onPressed: () async {
 
-                        option_refugee=true;
+                        optionRefugee=true;
                         if(_formKey.currentState!.validate()){
                           setState(() => loading = true);
                           dynamic result = await _auth.signInWithEmailAndPasswordRef(email, password);
